@@ -84,7 +84,7 @@ Draft Pull Requestを用いて、わからない箇所を聞くとコードを�
 | :--- | ---: |
 | AndroidStudio | Chipmunk 2021.2.1 Patch 2 |
 | Git | 2.37.1.windows.1 |
-| JDK | 1.8 |
+| JDK | 11 |
 
 また、各種設定は済んでいるものとします。
 
