@@ -1,13 +1,16 @@
 package jp.ac.okinawa_ct.nitoc_ict.aroa.ui.home
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import jp.ac.okinawa_ct.nitoc_ict.aroa.data.dto.Result
 import jp.ac.okinawa_ct.nitoc_ict.aroa.databinding.FragmentHomeBinding
+import kotlinx.coroutines.flow.map
 
 class HomeFragment : Fragment() {
 
@@ -22,6 +25,7 @@ class HomeFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
+        Log.d("HoemFragment", "start")
         val homeViewModel =
             ViewModelProvider(this).get(HomeViewModel::class.java)
 
@@ -29,8 +33,13 @@ class HomeFragment : Fragment() {
         val root: View = binding.root
 
         val textView: TextView = binding.textHome
-        homeViewModel.text.observe(viewLifecycleOwner) {
+        homeViewModel.foundTrials.observe(viewLifecycleOwner) {
             textView.text = it
+        }
+        Log.d("HoemFragment", "end")
+        textView.setOnClickListener {
+            Log.d("HoemFragment", "textViewClicked")
+            homeViewModel.findTrialsNearMe()
         }
         return root
     }
