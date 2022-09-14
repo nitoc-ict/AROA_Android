@@ -65,4 +65,6 @@ dependencies {
     implementation 'com.google.firebase:firebase-analytics-ktx' // Firebase Analytics
     implementation 'com.google.firebase:firebase-firestore-ktx' // Firebase FireStore
 
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-play-services:1.6.4" // FireBase の Task で await を使えるようにするライブラリ
+
 }
