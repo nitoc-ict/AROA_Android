@@ -24,13 +24,13 @@ class AddTrialMapsFragment : Fragment() {
         private const val POLYLINE_WIDTH = 12f
     }
 
-    private var map: GoogleMap? = null
-    private var polyline: Polyline? = null
+    private lateinit var map: GoogleMap
+    private lateinit var polyline: Polyline
     private val overview = 0
     private lateinit var viewModel: AddTrialMapsViewModel
 
     private val callback = OnMapReadyCallback { googleMap ->
-        viewModel.execute()
+        viewModel.directionApiExecute()
         moveCamera()
         setMapLongClick(googleMap)
         setMarkerClick(googleMap)
@@ -42,7 +42,7 @@ class AddTrialMapsFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val viewModel = ViewModelProvider(this).get(AddTrialMapsViewModel::class.java)
+        viewModel = ViewModelProvider(this).get(AddTrialMapsViewModel::class.java)
         return inflater.inflate(R.layout.fragment_add_trial_maps, container, false)
     }
 
@@ -59,16 +59,17 @@ class AddTrialMapsFragment : Fragment() {
         })
     }
 
+    //カメラを移動
     private fun moveCamera() {
         // Add a marker in Sydney and move the camera
-        val okinawa = LatLng(26.387409,127.729753)
-        map?.apply {
-            addMarker(MarkerOptions().position(okinawa).title("Marker in Okinawa"))
-            // moveCamera(CameraUpdateFactory.newLatLng(tokyo))
-            moveCamera(CameraUpdateFactory.newLatLngZoom(okinawa, ZOOM_SIZE))
+        val origin = LatLng(viewModel.origin.value!!.lat, viewModel.origin.value!!.lng)
+        map.apply {
+            addMarker(MarkerOptions().position(origin).title("Marker in Origin"))
+            moveCamera(CameraUpdateFactory.newLatLngZoom(origin, ZOOM_SIZE))
         }
     }
 
+    //マップをロングクリック時にマーカーを追加
     private fun setMapLongClick(map: GoogleMap) {
         map.setOnMapLongClickListener{latLng ->
             val snippet = String.format(
@@ -94,6 +95,7 @@ class AddTrialMapsFragment : Fragment() {
         }
     }
 
+    //マーカーをクリック時にそのマーカーを削除
     private fun setMarkerClick(map: GoogleMap) {
         map.setOnMarkerClickListener{marker ->
             viewModel.removeWaypointMarker(marker)
@@ -102,6 +104,7 @@ class AddTrialMapsFragment : Fragment() {
         }
     }
 
+    //マーカーをドラッグ時に、マーカーのLatLngを更新
     private fun setOnMarkerDrag(map: GoogleMap) {
         map.setOnMarkerDragListener(object : GoogleMap.OnMarkerDragListener {
             private var start: com.google.maps.model.LatLng? = null
@@ -111,7 +114,6 @@ class AddTrialMapsFragment : Fragment() {
                 marker.position.let { start =
                     com.google.maps.model.LatLng(it.latitude, it.longitude)
                 }
-                Log.i("MapsActivity","StartMarker:${start.toString()}")
             }
 
             override fun onMarkerDrag(marker: Marker) {
@@ -122,19 +124,17 @@ class AddTrialMapsFragment : Fragment() {
                 marker.position.let { end =
                     com.google.maps.model.LatLng(it.latitude, it.longitude)
                 }
-                Log.i("MapsActivity","EndMarker:${end.toString()}")
                 viewModel.changeWaypointMarker(marker)
             }
         })
     }
 
+    //Polylineを更新
     private fun updatePolyline(directionsResult: DirectionsResult?, googleMap: GoogleMap?) {
         googleMap ?: return
         directionsResult ?: return
         removePolyline()
-        Log.i("MapsActivity","doUpdatePolyline")
         addPolyline(directionsResult, googleMap)
-        Log.i("MapsActivity","didUpdatePolyline")
     }
 
     // 線を消す.
