@@ -9,7 +9,6 @@ import com.google.maps.model.LatLng
 import com.google.maps.model.TravelMode
 import com.google.maps.model.Unit
 import jp.ac.okinawa_ct.nitoc_ict.aroa.BuildConfig
-import jp.ac.okinawa_ct.nitoc_ict.aroa.R
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import java.util.*
