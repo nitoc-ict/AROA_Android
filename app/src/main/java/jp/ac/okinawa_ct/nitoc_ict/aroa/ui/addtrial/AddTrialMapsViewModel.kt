@@ -5,10 +5,11 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
+import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.Marker
 import com.google.maps.android.PolyUtil
 import com.google.maps.model.DirectionsResult
-import com.google.maps.model.LatLng
+import com.google.maps.model.LatLng as MapsLatLng
 import jp.ac.okinawa_ct.nitoc_ict.aroa.data.dto.Trial
 import jp.ac.okinawa_ct.nitoc_ict.aroa.data.repository.TrialRepositoryDummy
 import kotlinx.coroutines.launch
@@ -19,6 +20,9 @@ class AddTrialMapsViewModel(application: Application) : AndroidViewModel(applica
     val directionsResult: LiveData<DirectionsResult?> = _directionsResult
 
     private val trialRepositoryDummy = TrialRepositoryDummy()
+
+    private val _navFrag = MutableLiveData<Boolean>()
+    val navFrag: LiveData<Boolean> get() = _navFrag
 
     private val _origin = MutableLiveData<LatLng>()
     val origin: LiveData<LatLng> get() = _origin
@@ -32,17 +36,17 @@ class AddTrialMapsViewModel(application: Application) : AndroidViewModel(applica
     val waypointMarkers: LiveData<ArrayList<Marker>> get() = _waypointMarkers
 
 
-    fun setOrigin(lat: Double, lng: Double) {
-        _origin.value = LatLng(lat,lng)
-    }
-
-    fun setDest(lat: Double, lng: Double) {
-        _dest.value = LatLng(lat,lng)
-    }
-
     init {
         _origin.value = LatLng(26.387409, 127.729753)
         _dest.value = LatLng(26.387409, 127.729753)
+    }
+
+    fun setOrigin(latLng: LatLng) {
+        _origin.value = latLng
+    }
+
+    fun setDest(latLng: LatLng) {
+        _dest.value = latLng
     }
 
     //waypointを追加する
@@ -86,8 +90,10 @@ class AddTrialMapsViewModel(application: Application) : AndroidViewModel(applica
     fun directionApiExecute() {
         viewModelScope.launch {
             val waypointsString = markersToString()
-            val result = DirectionsApiHelper().execute(getApplication(),
-                _origin.value, _dest.value, waypointsString
+            val result = DirectionsApiHelper().execute(
+                MapsLatLng(_origin.value!!.latitude, _origin.value!!.longitude),
+                MapsLatLng(_dest.value!!.latitude, _dest.value!!.longitude),
+                waypointsString
             )
             _directionsResult.value = result
         }
@@ -102,6 +108,7 @@ class AddTrialMapsViewModel(application: Application) : AndroidViewModel(applica
                     is Result.Loading -> "Loading"
                     is Result.Success -> {
                         //navigationを実装
+                        _navFrag.value = true
                     }
                     is Result.Error -> {
 
@@ -109,5 +116,9 @@ class AddTrialMapsViewModel(application: Application) : AndroidViewModel(applica
                 }
             }
         }
+    }
+
+    fun navCompleted() {
+        _navFrag.value = false
     }
 }

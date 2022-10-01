@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
@@ -16,6 +17,7 @@ import com.google.android.gms.maps.model.*
 import com.google.maps.android.PolyUtil
 import com.google.maps.model.DirectionsResult
 import jp.ac.okinawa_ct.nitoc_ict.aroa.R
+import jp.ac.okinawa_ct.nitoc_ict.aroa.databinding.FragmentAddTrialMapsBinding
 import java.util.*
 
 class AddTrialMapsFragment : Fragment() {
@@ -24,12 +26,19 @@ class AddTrialMapsFragment : Fragment() {
         private const val POLYLINE_WIDTH = 12f
     }
 
-    private lateinit var map: GoogleMap
-    private lateinit var polyline: Polyline
+    private var map: GoogleMap? = null
+    private var polyline: Polyline? = null
     private val overview = 0
     private lateinit var viewModel: AddTrialMapsViewModel
 
+    private lateinit var _binding: FragmentAddTrialMapsBinding
+
+    // This property is only valid between onCreateView and
+    // onDestroyView.
+    private val binding get() = _binding
+
     private val callback = OnMapReadyCallback { googleMap ->
+        map = googleMap
         viewModel.directionApiExecute()
         moveCamera()
         setMapLongClick(googleMap)
@@ -42,8 +51,13 @@ class AddTrialMapsFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        _binding = FragmentAddTrialMapsBinding.inflate(inflater,container, false)
         viewModel = ViewModelProvider(this).get(AddTrialMapsViewModel::class.java)
-        return inflater.inflate(R.layout.fragment_add_trial_maps, container, false)
+        val args = AddTrialMapsFragmentArgs.fromBundle(requireArguments())
+        viewModel.setOrigin(args.originLatLng)
+        viewModel.setDest(args.destLatLng)
+        binding.saveButton.setOnClickListener { viewModel.createNewTrial() }
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -57,14 +71,24 @@ class AddTrialMapsFragment : Fragment() {
         viewModel.directionsResult.observe(viewLifecycleOwner, Observer{
             updatePolyline(it, map)
         })
+
+        viewModel.navFrag.observe(viewLifecycleOwner, Observer {
+            if (it) {
+                val action = AddTrialMapsFragmentDirections.actionNavigationAddTrialMapsToNavigationAddTrial()
+                this.findNavController().navigate(action)
+                viewModel.navCompleted()
+            }
+        })
     }
 
     //カメラを移動
     private fun moveCamera() {
         // Add a marker in Sydney and move the camera
-        val origin = LatLng(viewModel.origin.value!!.lat, viewModel.origin.value!!.lng)
-        map.apply {
+        val origin = LatLng(viewModel.origin.value!!.latitude, viewModel.origin.value!!.longitude)
+        val dest = LatLng(viewModel.dest.value!!.latitude, viewModel.dest.value!!.longitude)
+        map?.apply {
             addMarker(MarkerOptions().position(origin).title("Marker in Origin"))
+            addMarker(MarkerOptions().position(dest).title("Marker in Dest"))
             moveCamera(CameraUpdateFactory.newLatLngZoom(origin, ZOOM_SIZE))
         }
     }
@@ -86,6 +110,7 @@ class AddTrialMapsFragment : Fragment() {
                     .snippet(snippet)
                     .draggable(true)
             )
+
 
             Log.i("MapsActivity","doAddMarker")
             if (marker != null) {
