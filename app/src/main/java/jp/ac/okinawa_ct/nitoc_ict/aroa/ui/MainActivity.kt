@@ -3,7 +3,6 @@ package jp.ac.okinawa_ct.nitoc_ict.aroa.ui
 import android.os.Bundle
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import androidx.appcompat.app.AppCompatActivity
-import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
@@ -30,7 +29,7 @@ class MainActivity : AppCompatActivity() {
         // menu should be considered as top level destinations.
         val appBarConfiguration = AppBarConfiguration(
             setOf(
-                R.id.navigation_home, R.id.navigation_add_trial, R.id.navigation_check_record
+                R.id.navigation_home, R.id.navigation_create_trial, R.id.navigation_check_record
             )
         )
         setupActionBarWithNavController(navController, appBarConfiguration)

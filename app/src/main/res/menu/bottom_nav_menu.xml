@@ -7,7 +7,7 @@
         android:title="@string/title_home" />
 
     <item
-        android:id="@+id/navigation_add_trial"
+        android:id="@+id/navigation_create_trial"
         android:icon="@drawable/ic_add_trial_black_24"
         android:title="@string/title_add_trial" />
 
