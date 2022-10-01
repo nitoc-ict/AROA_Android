@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.addtrial.start.AddTrialFragment">
+    tools:context=".ui.addtrial.AddTrialFragment">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -37,10 +37,8 @@
             android:textSize="24sp" />
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/createdTrialList"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
+            android:layout_height="match_parent" />
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
