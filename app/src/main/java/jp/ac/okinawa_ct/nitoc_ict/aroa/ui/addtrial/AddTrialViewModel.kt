@@ -5,9 +5,14 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 
 class AddTrialViewModel : ViewModel() {
+    private val _navFrag = MutableLiveData<Boolean?>()
+    val navFrag: LiveData<Boolean?> get() = _navFrag
 
-    private val _text = MutableLiveData<String>().apply {
-        value = "This is addTrial Fragment"
+    fun navStart() {
+        _navFrag.value = true
     }
-    val text: LiveData<String> = _text
+
+    fun navCompleted() {
+        _navFrag.value = null
+    }
 }
