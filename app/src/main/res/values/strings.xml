@@ -23,4 +23,5 @@
     <string name="action_next">次へ</string>
     <string name="action_cancel">キャンセル</string>
     <string name="action_select_wearable_device">デバイスを選択する</string>
+    <string name="action_join_trial">トライアルを始める</string>
 </resources>
