@@ -13,13 +13,13 @@
 
     <fragment
         android:id="@+id/navigation_add_trial"
-        android:name="jp.ac.okinawa_ct.nitoc_ict.aroa.ui.addtrial.AddTrialFragment"
+        android:name="jp.ac.okinawa_ct.nitoc_ict.aroa.ui.add_trial.AddTrialFragment"
         android:label="@string/title_add_trial"
         tools:layout="@layout/fragment_add_trial" />
 
     <fragment
         android:id="@+id/navigation_check_record"
-        android:name="jp.ac.okinawa_ct.nitoc_ict.aroa.ui.checkrecord.CheckRecordFragment"
+        android:name="jp.ac.okinawa_ct.nitoc_ict.aroa.ui.check_record.CheckRecordFragment"
         android:label="@string/title_check_record"
         tools:layout="@layout/fragment_check_record" />
 </navigation>

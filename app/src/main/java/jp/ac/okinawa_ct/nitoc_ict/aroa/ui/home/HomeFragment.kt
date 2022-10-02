@@ -8,6 +8,7 @@ import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import jp.ac.okinawa_ct.nitoc_ict.aroa.databinding.FragmentHomeBinding
+import jp.ac.okinawa_ct.nitoc_ict.aroa.ui.trial_detail.TrialDetailActivity
 
 class HomeFragment : Fragment() {
 
@@ -23,12 +24,18 @@ class HomeFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         val homeViewModel =
-            ViewModelProvider(this).get(HomeViewModel::class.java)
+            ViewModelProvider(this)[HomeViewModel::class.java]
 
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
         val textView: TextView = binding.textHome
+
+        textView.setOnClickListener {
+            val intent = TrialDetailActivity.makeIntent(requireContext(), "TrialId")
+            startActivity(intent)
+        }
+
         homeViewModel.text.observe(viewLifecycleOwner) {
             textView.text = it
         }
