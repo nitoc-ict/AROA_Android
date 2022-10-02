@@ -1,4 +1,4 @@
-package jp.ac.okinawa_ct.nitoc_ict.aroa.ui.addtrial
+package jp.ac.okinawa_ct.nitoc_ict.aroa.ui.check_record
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -7,11 +7,11 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import jp.ac.okinawa_ct.nitoc_ict.aroa.databinding.FragmentAddTrialBinding
+import jp.ac.okinawa_ct.nitoc_ict.aroa.databinding.FragmentCheckRecordBinding
 
-class AddTrialFragment : Fragment() {
+class CheckRecordFragment : Fragment() {
 
-    private var _binding: FragmentAddTrialBinding? = null
+    private var _binding: FragmentCheckRecordBinding? = null
 
     // This property is only valid between onCreateView and
     // onDestroyView.
@@ -22,14 +22,14 @@ class AddTrialFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val dashboardViewModel =
-            ViewModelProvider(this).get(AddTrialViewModel::class.java)
+        val notificationsViewModel =
+            ViewModelProvider(this).get(CheckRecordViewModel::class.java)
 
-        _binding = FragmentAddTrialBinding.inflate(inflater, container, false)
+        _binding = FragmentCheckRecordBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
-        val textView: TextView = binding.textAddTrial
-        dashboardViewModel.text.observe(viewLifecycleOwner) {
+        val textView: TextView = binding.textCheckRecord
+        notificationsViewModel.text.observe(viewLifecycleOwner) {
             textView.text = it
         }
         return root
