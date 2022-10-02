@@ -24,9 +24,13 @@ class ConfigJoinTrialViewModel(application: Application) : AndroidViewModel(appl
     private val selectedDeviceAddress = userPreferences.selectedDeviceAddress
 
     val selectedDeviceName: Flow<String?> = selectedDeviceAddress.map { address ->
-        bluetoothAdapter.bondedDevices.find {
-            it.address == address
-        }?.name
+        return@map try {
+            bluetoothAdapter.bondedDevices.find {
+                it.address == address
+            }?.name
+        } catch (e: SecurityException) {
+            null
+        }
     }
 
     fun saveIsUseWearOs(isUse: Boolean) = runBlocking {
