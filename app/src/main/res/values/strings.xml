@@ -3,4 +3,24 @@
     <string name="title_home">ホーム</string>
     <string name="title_add_trial">トライアル作成</string>
     <string name="title_check_record">記録</string>
+    <string name="title_config_join_trial">トライアルに参加する</string>
+    <string name="title_select_ble_device">デバイスを選択</string>
+
+    <string name="available_device">使用可能な機器</string>
+    <string name="available_device_hint">AROAがインストールされたスマートウォッチが使用できます。</string>
+    <string name="available_device_not_found">このスマートフォンとペアリングされたデバイスが見つかりませんでした。</string>
+
+    <string name="device_connected">接続済み</string>
+    <string name="device_disconnected">未接続</string>
+    <string name="device_not_selected">デバイス未選択</string>
+
+    <string name="feature_wear_os">WearOS</string>
+    <string name="feature_nreal_air">NrealAir</string>
+    <string name="use_feature">使用する</string>
+    <string name="feature_wear_os_is_disable">デバイスとの接続機能は無効になります。</string>
+
+    <string name="reason_of_using_bluetooth">ウェアラブルデバイスと接続するために、Bluetoothの権限が必要です。\n次の画面で許可を押すか、キャンセルしてウェアラブルデバイスを使用しないことも出来ます。</string>
+    <string name="action_next">次へ</string>
+    <string name="action_cancel">キャンセル</string>
+    <string name="action_select_wearable_device">デバイスを選択する</string>
 </resources>
