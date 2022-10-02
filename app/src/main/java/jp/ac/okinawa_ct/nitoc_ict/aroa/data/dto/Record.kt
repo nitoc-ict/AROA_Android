@@ -8,6 +8,7 @@ package jp.ac.okinawa_ct.nitoc_ict.aroa.data.dto
  */
 sealed class Record {
     abstract val userId: String
+    abstract val trialId: String
     abstract val rank: Int
 
     /**
@@ -17,6 +18,7 @@ sealed class Record {
      */
     data class MarathonRecord(
         override val userId: String,
+        override val trialId: String,
         val time: Long,
         override val rank: Int = -1,
     ): Record()
@@ -28,6 +30,7 @@ sealed class Record {
      */
     data class DanglingRecord(
         override val userId: String,
+        override val trialId: String,
         val time: Long,
         override val rank: Int = -1,
     ): Record()
