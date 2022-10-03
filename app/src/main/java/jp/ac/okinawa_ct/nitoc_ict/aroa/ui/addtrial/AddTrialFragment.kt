@@ -1,9 +1,11 @@
 package jp.ac.okinawa_ct.nitoc_ict.aroa.ui.addtrial
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -25,6 +27,32 @@ class AddTrialFragment : Fragment() {
             ViewModelProvider(this).get(AddTrialViewModel::class.java)
 //        binding = FragmentAddTrialBinding.inflate(inflater, container, false)
         binding = FragmentAddTrialBinding.inflate(layoutInflater)
+
+
+
+
+        val adapter = CreatedTrialAdapter(binding.createdTrialList.context)
+        binding.createdTrialList.adapter = adapter
+        adapter.setOnItemClickListener { view, position ->
+            val action = AddTrialFragmentDirections.actionNavigationCreateTrialToTrialDetailFragment()
+            this.findNavController().navigate(action)
+            Toast.makeText(context,"$position",Toast.LENGTH_SHORT).show()
+        }
+
+        viewModel.testData.observe(viewLifecycleOwner, Observer {
+            it?.let {
+                Log.i("AddTrialFragment","${it}")
+                adapter.submitList(it)
+            }
+        })
+
+        viewModel.collectState.observe(viewLifecycleOwner, Observer {
+            when(it) {
+                "Loading" -> Toast.makeText(context , "Loading", Toast.LENGTH_SHORT).show()
+                "Success" -> Toast.makeText(context , "Success", Toast.LENGTH_SHORT).show()
+                "Error" -> Toast.makeText(context , "Error", Toast.LENGTH_SHORT).show()
+            }
+        })
 
         viewModel.navFrag.observe(viewLifecycleOwner, Observer {
             if (it == true) {
