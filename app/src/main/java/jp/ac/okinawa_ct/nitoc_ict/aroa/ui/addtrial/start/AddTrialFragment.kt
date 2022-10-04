@@ -36,7 +36,7 @@ class AddTrialFragment : Fragment() {
         binding.createdTrialList.adapter = adapter
         adapter.setOnItemClickListener { view, position ->
             val action = AddTrialFragmentDirections.actionNavigationCreateTrialToTrialDetailFragment(
-                viewModel.testData.value!!.get(position).id
+                viewModel.testData.value!!.get(position).id,true
             )
             this.findNavController().navigate(action)
             Toast.makeText(context, "$position", Toast.LENGTH_SHORT).show()

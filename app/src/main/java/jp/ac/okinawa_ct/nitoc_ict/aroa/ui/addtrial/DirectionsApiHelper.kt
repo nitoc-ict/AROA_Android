@@ -2,17 +2,16 @@ package jp.ac.okinawa_ct.nitoc_ict.aroa.ui.addtrial
 
 import android.util.Log
 import androidx.annotation.Nullable
-import com.google.android.gms.maps.model.LatLng
 import com.google.maps.DirectionsApi
 import com.google.maps.GeoApiContext
 import com.google.maps.model.DirectionsResult
-import com.google.maps.model.LatLng as MapsLatLng
 import com.google.maps.model.TravelMode
 import com.google.maps.model.Unit
 import jp.ac.okinawa_ct.nitoc_ict.aroa.BuildConfig
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import java.util.*
+import com.google.maps.model.LatLng as MapsLatLng
 
 class DirectionsApiHelper {
     /**

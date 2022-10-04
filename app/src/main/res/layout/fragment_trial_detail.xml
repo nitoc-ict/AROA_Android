@@ -12,7 +12,7 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        tools:context=".ui.addtrial.detail.TrialDetailFragment" />
+        tools:context=".ui.detail.TrialDetailFragment" />
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -24,9 +24,26 @@
             android:id="@+id/detail_trial_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="トライアル名"
+            android:layout_gravity="center"
+            android:textSize="24dp"/>
+        <TextView
+            android:id="@+id/detail_trial_authorUserId"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:textSize="12dp"/>
+        <TextView
+            android:id="@+id/detail_trial_position"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:textSize="12dp"/>
+        <Button
+            android:id="@+id/start_trial_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="トライアルを開始"
             android:textSize="24dp"/>
     </LinearLayout>
-
-
 </androidx.constraintlayout.widget.ConstraintLayout>
