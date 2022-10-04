@@ -1,4 +1,4 @@
-package jp.ac.okinawa_ct.nitoc_ict.aroa.ui.addtrial
+package jp.ac.okinawa_ct.nitoc_ict.aroa.ui.addtrial.waypoints
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
@@ -9,11 +9,11 @@ import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.Marker
 import com.google.maps.android.PolyUtil
 import com.google.maps.model.DirectionsResult
-import com.google.maps.model.LatLng as MapsLatLng
+import jp.ac.okinawa_ct.nitoc_ict.aroa.data.dto.Result
 import jp.ac.okinawa_ct.nitoc_ict.aroa.data.dto.Trial
 import jp.ac.okinawa_ct.nitoc_ict.aroa.data.repository.TrialRepositoryDummy
+import jp.ac.okinawa_ct.nitoc_ict.aroa.ui.addtrial.DirectionsApiHelper
 import kotlinx.coroutines.launch
-import jp.ac.okinawa_ct.nitoc_ict.aroa.data.dto.Result as Result
 
 class AddTrialMapsViewModel(application: Application) : AndroidViewModel(application) {
     private val _directionsResult = MutableLiveData<DirectionsResult?>()
@@ -91,8 +91,8 @@ class AddTrialMapsViewModel(application: Application) : AndroidViewModel(applica
         viewModelScope.launch {
             val waypointsString = markersToString()
             val result = DirectionsApiHelper().execute(
-                MapsLatLng(_origin.value!!.latitude, _origin.value!!.longitude),
-                MapsLatLng(_dest.value!!.latitude, _dest.value!!.longitude),
+                com.google.maps.model.LatLng(_origin.value!!.latitude, _origin.value!!.longitude),
+                com.google.maps.model.LatLng(_dest.value!!.latitude, _dest.value!!.longitude),
                 waypointsString
             )
             _directionsResult.value = result
@@ -100,8 +100,9 @@ class AddTrialMapsViewModel(application: Application) : AndroidViewModel(applica
     }
 
     fun createNewTrial() {
-        val trialCourse = PolyUtil.decode(directionsResult.value!!.routes[0].overviewPolyline.encodedPath)
-        val trial = Trial.Marathon("","",trialCourse[0],trialCourse,)
+        val trialCourse =
+            PolyUtil.decode(directionsResult.value!!.routes[0].overviewPolyline.encodedPath)
+        val trial = Trial.Marathon("", "", trialCourse[0], trialCourse,)
         viewModelScope.launch {
             trialRepositoryDummy.createTrial(trial).collect{
                 when(it) {

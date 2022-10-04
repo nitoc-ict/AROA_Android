@@ -1,4 +1,4 @@
-package jp.ac.okinawa_ct.nitoc_ict.aroa.ui.addtrial.detail
+package jp.ac.okinawa_ct.nitoc_ict.aroa.ui.detail
 
 import android.os.Bundle
 import android.view.LayoutInflater

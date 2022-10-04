@@ -1,4 +1,4 @@
-package jp.ac.okinawa_ct.nitoc_ict.aroa.ui.addtrial
+package jp.ac.okinawa_ct.nitoc_ict.aroa.ui.addtrial.origin
 
 import android.os.Bundle
 import android.util.Log
@@ -49,7 +49,7 @@ class AddTrialOriginFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        _binding = FragmentAddTrialOriginBinding.inflate(inflater,container, false)
+        _binding = FragmentAddTrialOriginBinding.inflate(inflater, container, false)
         viewModel = ViewModelProvider(this).get(AddTrialOriginViewModel::class.java)
         binding.nextButton.setOnClickListener { viewModel.navStart() }
         return binding.root
@@ -65,11 +65,14 @@ class AddTrialOriginFragment : Fragment() {
     private fun observeLiveData() {
         viewModel.navFrag.observe(viewLifecycleOwner, androidx.lifecycle.Observer {
             if (it == true) {
-                Log.i("originValue",viewModel.origin.value.toString())
+                Log.i("originValue", viewModel.origin.value.toString())
                 val action =
-                    AddTrialOriginFragmentDirections
-                    .actionNavigationAddTrialOriginToNavigationAddTrialDest(
-                        LatLng(viewModel.origin.value!!.latitude,viewModel.origin.value!!.longitude))
+                   AddTrialOriginFragmentDirections.actionNavigationAddTrialOriginToNavigationAddTrialDest(
+                        LatLng(
+                            viewModel.origin.value!!.latitude,
+                            viewModel.origin.value!!.longitude
+                        )
+                    )
                 this.findNavController().navigate(action)
                 viewModel.navCompleted()
             }

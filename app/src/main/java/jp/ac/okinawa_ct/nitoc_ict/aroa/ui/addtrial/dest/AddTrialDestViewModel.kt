@@ -1,4 +1,4 @@
-package jp.ac.okinawa_ct.nitoc_ict.aroa.ui.addtrial
+package jp.ac.okinawa_ct.nitoc_ict.aroa.ui.addtrial.dest
 
 import android.app.Application
 import android.util.Log
@@ -8,7 +8,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.google.android.gms.maps.model.LatLng
 import com.google.maps.model.DirectionsResult
-import com.google.maps.model.LatLng as MapsLatLng
+import jp.ac.okinawa_ct.nitoc_ict.aroa.ui.addtrial.DirectionsApiHelper
 import kotlinx.coroutines.launch
 
 class AddTrialDestViewModel(application: Application) : AndroidViewModel(application) {
@@ -29,7 +29,7 @@ class AddTrialDestViewModel(application: Application) : AndroidViewModel(applica
     }
 
     fun setDest(latLng: LatLng) {
-        Log.i("DestViewModel","setDest:${latLng.toString()}")
+        Log.i("DestViewModel", "setDest:${latLng.toString()}")
         _dest.value = latLng
         directionApiExecute()
     }
@@ -52,10 +52,10 @@ class AddTrialDestViewModel(application: Application) : AndroidViewModel(applica
     fun directionApiExecute() {
         viewModelScope.launch {
             val result = DirectionsApiHelper().onlyOriginDestExecute(
-                MapsLatLng(_origin.value!!.latitude, _origin.value!!.longitude),
-                MapsLatLng(_dest.value!!.latitude, _dest.value!!.longitude)
+                com.google.maps.model.LatLng(_origin.value!!.latitude, _origin.value!!.longitude),
+                com.google.maps.model.LatLng(_dest.value!!.latitude, _dest.value!!.longitude)
             )
-            Log.i("DestViewModel","result:${result.toString()}")
+            Log.i("DestViewModel", "result:${result.toString()}")
             _directionsResult.value = result
         }
     }

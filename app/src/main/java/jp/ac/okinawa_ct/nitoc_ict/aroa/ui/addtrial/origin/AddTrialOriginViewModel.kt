@@ -1,4 +1,4 @@
-package jp.ac.okinawa_ct.nitoc_ict.aroa.ui.addtrial
+package jp.ac.okinawa_ct.nitoc_ict.aroa.ui.addtrial.origin
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel

@@ -1,4 +1,4 @@
-package jp.ac.okinawa_ct.nitoc_ict.aroa.ui.addtrial
+package jp.ac.okinawa_ct.nitoc_ict.aroa.ui.addtrial.waypoints
 
 import android.os.Bundle
 import android.util.Log
@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
@@ -16,21 +17,21 @@ import com.google.android.gms.maps.model.*
 import com.google.maps.android.PolyUtil
 import com.google.maps.model.DirectionsResult
 import jp.ac.okinawa_ct.nitoc_ict.aroa.R
-import jp.ac.okinawa_ct.nitoc_ict.aroa.databinding.FragmentAddTrialDestBinding
+import jp.ac.okinawa_ct.nitoc_ict.aroa.databinding.FragmentAddTrialMapsBinding
 import java.util.*
 
-class AddTrialDestFragment : Fragment() {
-
+class AddTrialMapsFragment : Fragment() {
     companion object {
         private const val ZOOM_SIZE = 14f
         private const val POLYLINE_WIDTH = 12f
     }
 
     private var map: GoogleMap? = null
-    private lateinit var viewModel: AddTrialDestViewModel
     private var polyline: Polyline? = null
+    private val overview = 0
+    private lateinit var viewModel: AddTrialMapsViewModel
 
-    private lateinit var _binding: FragmentAddTrialDestBinding
+    private lateinit var _binding: FragmentAddTrialMapsBinding
 
     // This property is only valid between onCreateView and
     // onDestroyView.
@@ -38,6 +39,7 @@ class AddTrialDestFragment : Fragment() {
 
     private val callback = OnMapReadyCallback { googleMap ->
         map = googleMap
+        viewModel.directionApiExecute()
         moveCamera()
         setMapLongClick(googleMap)
         setMarkerClick(googleMap)
@@ -49,11 +51,14 @@ class AddTrialDestFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        _binding = FragmentAddTrialDestBinding.inflate(inflater,container, false)
-        val args = AddTrialDestFragmentArgs.fromBundle(requireArguments())
-        viewModel = ViewModelProvider(this).get(AddTrialDestViewModel::class.java)
+        _binding = FragmentAddTrialMapsBinding.inflate(inflater, container, false)
+        viewModel = ViewModelProvider(this).get(AddTrialMapsViewModel::class.java)
+        val args = AddTrialMapsFragmentArgs.fromBundle(
+            requireArguments()
+        )
         viewModel.setOrigin(args.originLatLng)
-        binding.nextButton.setOnClickListener { viewModel.navStart() }
+        viewModel.setDest(args.destLatLng)
+        binding.saveButton.setOnClickListener { viewModel.createNewTrial() }
         return binding.root
     }
 
@@ -66,16 +71,13 @@ class AddTrialDestFragment : Fragment() {
 
     private fun observeLiveData() {
         viewModel.directionsResult.observe(viewLifecycleOwner, androidx.lifecycle.Observer{
-            Log.i("DestFragment","directionsResult:${it.toString()}")
             updatePolyline(it, map)
         })
 
-        viewModel.navFrag.observe(viewLifecycleOwner, androidx.lifecycle.Observer {
+        viewModel.navFrag.observe(viewLifecycleOwner, Observer {
             if (it) {
-                val action = AddTrialDestFragmentDirections
-                    .actionNavigationAddTrialDestToNavigationAddTrialMaps(
-                        LatLng(viewModel.origin.value!!.latitude,viewModel.origin.value!!.longitude),
-                        LatLng(viewModel.dest.value!!.latitude,viewModel.dest.value!!.longitude))
+                val action =
+                    AddTrialMapsFragmentDirections.actionNavigationAddTrialMapsToNavigationAddTrial()
                 this.findNavController().navigate(action)
                 viewModel.navCompleted()
             }
@@ -85,9 +87,11 @@ class AddTrialDestFragment : Fragment() {
     //カメラを移動
     private fun moveCamera() {
         // Add a marker in Sydney and move the camera
-        val origin = LatLng(viewModel.origin.value!!.latitude,viewModel.origin.value!!.longitude)
+        val origin = LatLng(viewModel.origin.value!!.latitude, viewModel.origin.value!!.longitude)
+        val dest = LatLng(viewModel.dest.value!!.latitude, viewModel.dest.value!!.longitude)
         map?.apply {
             addMarker(MarkerOptions().position(origin).title("Marker in Origin"))
+            addMarker(MarkerOptions().position(dest).title("Marker in Dest"))
             moveCamera(CameraUpdateFactory.newLatLngZoom(origin, ZOOM_SIZE))
         }
     }
@@ -102,12 +106,6 @@ class AddTrialDestFragment : Fragment() {
                 latLng.longitude
             )
 
-            map.clear()
-
-            map.addMarker(MarkerOptions()
-                .position(LatLng(viewModel.origin.value!!.latitude,viewModel.origin.value!!.longitude))
-                .title("Marker in Origin"))
-
             val marker = map.addMarker(
                 MarkerOptions()
                     .position(latLng)
@@ -117,17 +115,18 @@ class AddTrialDestFragment : Fragment() {
             )
 
 
+            Log.i("MapsActivity", "doAddMarker")
             if (marker != null) {
-                Log.i("DestFragment","addMarker:${marker.position.toString()}")
-                viewModel.setDest(marker.position)
+                viewModel.addWaypointMarker(marker)
             }
+            Log.i("MapsActivity", "didAddMarker")
         }
     }
 
     //マーカーをクリック時にそのマーカーを削除
     private fun setMarkerClick(map: GoogleMap) {
         map.setOnMarkerClickListener{marker ->
-            viewModel.removeDest()
+            viewModel.removeWaypointMarker(marker)
             marker.remove()
             return@setOnMarkerClickListener true
         }
@@ -153,7 +152,7 @@ class AddTrialDestFragment : Fragment() {
                 marker.position.let { end =
                     com.google.maps.model.LatLng(it.latitude, it.longitude)
                 }
-                viewModel.setDest(marker.position)
+                viewModel.changeWaypointMarker(marker)
             }
         })
     }
@@ -176,10 +175,11 @@ class AddTrialDestFragment : Fragment() {
     // 線を引く
     private fun addPolyline(directionsResult: DirectionsResult, map: GoogleMap) {
         val polylineOptions = PolylineOptions()
-        polylineOptions.width(AddTrialDestFragment.POLYLINE_WIDTH)
+        polylineOptions.width(POLYLINE_WIDTH)
         // ARGB32bit形式.
         polylineOptions.color(R.color.map_polyline_stroke)
-        val decodedPath = PolyUtil.decode(directionsResult.routes[0].overviewPolyline.encodedPath)
+        val decodedPath =
+            PolyUtil.decode(directionsResult.routes[overview].overviewPolyline.encodedPath)
         polyline = map.addPolyline(polylineOptions.addAll(decodedPath))
     }
 }

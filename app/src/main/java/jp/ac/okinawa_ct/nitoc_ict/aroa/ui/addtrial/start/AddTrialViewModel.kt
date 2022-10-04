@@ -1,10 +1,9 @@
-package jp.ac.okinawa_ct.nitoc_ict.aroa.ui.addtrial
+package jp.ac.okinawa_ct.nitoc_ict.aroa.ui.addtrial.start
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.google.android.gms.maps.model.LatLng
 import jp.ac.okinawa_ct.nitoc_ict.aroa.data.dto.Result
 import jp.ac.okinawa_ct.nitoc_ict.aroa.data.dto.Trial
 import jp.ac.okinawa_ct.nitoc_ict.aroa.data.repository.TrialRepositoryDummy
