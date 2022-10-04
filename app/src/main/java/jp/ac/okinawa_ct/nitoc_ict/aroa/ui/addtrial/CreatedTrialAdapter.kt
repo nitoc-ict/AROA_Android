@@ -55,38 +55,3 @@ class CreatedTrialAdapter(
     }
 }
 
-//class CreatedTrialAdapter: ListAdapter<Trial, CreatedTrialAdapter.ViewHolder>(CreatedTrialDiffCallback()) {
-//    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-//        val item = getItem(position)
-//        holder.bind(item)
-//    }
-//
-//    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-//        return ViewHolder.from(parent)
-//    }
-//
-//    class ViewHolder private constructor(private val binding: ListItemTrialBinding): RecyclerView.ViewHolder(binding.root) {
-//        fun bind(item: Trial) {
-//            binding.trialName.text = item.name
-////            binding.executePendingBindings()
-//        }
-//        companion object {
-//            fun from(parent: ViewGroup): ViewHolder {
-//                val layoutInflater = LayoutInflater.from(parent.context)
-//                val binding = ListItemTrialBinding.inflate(layoutInflater,parent,false)
-//                return ViewHolder(binding)
-//            }
-//        }
-//    }
-//}
-//
-//class CreatedTrialDiffCallback : DiffUtil.ItemCallback<Trial>() {
-//    override fun areItemsTheSame(oldItem: Trial, newItem: Trial): Boolean {
-//        return oldItem.id == newItem.id
-//    }
-//
-//    override fun areContentsTheSame(oldItem: Trial, newItem: Trial): Boolean {
-//        return oldItem == newItem
-//    }
-//}
-
