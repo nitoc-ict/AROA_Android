@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/navigation_home"
-        android:name="jp.ac.okinawa_ct.nitoc_ict.aroa.ui.home.HomeFragment"
+        android:name="jp.ac.okinawa_ct.nitoc_ict.aroa.ui.home.HomeNavGraphFragment"
         android:label="@string/title_home"
         tools:layout="@layout/fragment_home" />
 
@@ -19,7 +19,7 @@
 
     <fragment
         android:id="@+id/navigation_check_record"
-        android:name="jp.ac.okinawa_ct.nitoc_ict.aroa.ui.checkrecord.CheckRecordFragment"
+        android:name="jp.ac.okinawa_ct.nitoc_ict.aroa.ui.checkrecord.RecordNavGraphFragment"
         android:label="@string/title_check_record"
-        tools:layout="@layout/fragment_check_record" />
+        tools:layout="@layout/fragment_check_record_list" />
 </navigation>
