@@ -37,4 +37,6 @@ interface RecordRepository {
      * @return データベースへの送信委成功した時は実際のランキングが保存された[Record]
      */
     fun createOrUpdateRecord(trial: Trial, record: Record): Flow<Result<Record>>
+
+    fun getMyRecords(userId: String): Flow<Result<List<Record>>>
 }
