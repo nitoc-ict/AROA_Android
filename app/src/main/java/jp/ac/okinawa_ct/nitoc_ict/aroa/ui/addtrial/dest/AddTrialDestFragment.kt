@@ -32,8 +32,6 @@ class AddTrialDestFragment : Fragment() {
 
     private lateinit var _binding: FragmentAddTrialDestBinding
 
-    // This property is only valid between onCreateView and
-    // onDestroyView.
     private val binding get() = _binding
 
     private val callback = OnMapReadyCallback { googleMap ->
@@ -107,7 +105,7 @@ class AddTrialDestFragment : Fragment() {
                 latLng.latitude,
                 latLng.longitude
             )
-
+            //マップをクリア、originのマーカーを追加
             map.clear()
 
             map.addMarker(
@@ -127,7 +125,6 @@ class AddTrialDestFragment : Fragment() {
                     .snippet(snippet)
                     .draggable(true)
             )
-
 
             if (marker != null) {
                 Log.i("DestFragment", "addMarker:${marker.position.toString()}")

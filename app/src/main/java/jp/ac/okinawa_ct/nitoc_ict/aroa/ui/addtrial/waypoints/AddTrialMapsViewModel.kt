@@ -106,7 +106,9 @@ class AddTrialMapsViewModel(application: Application) : AndroidViewModel(applica
         viewModelScope.launch {
             trialRepositoryDummy.createTrial(trial).collect{
                 when(it) {
-                    is Result.Loading -> "Loading"
+                    is Result.Loading -> {
+
+                    }
                     is Result.Success -> {
                         //navigationを実装
                         _navFrag.value = true

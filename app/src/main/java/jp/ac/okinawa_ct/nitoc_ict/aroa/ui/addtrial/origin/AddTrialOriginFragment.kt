@@ -30,11 +30,7 @@ class AddTrialOriginFragment : Fragment() {
 
     private lateinit var _binding: FragmentAddTrialOriginBinding
 
-    // This property is only valid between onCreateView and
-    // onDestroyView.
     private val binding get() = _binding
-
-    private var currentMarker: Marker? = null
 
     private val callback = OnMapReadyCallback { googleMap ->
         map = googleMap
@@ -81,7 +77,6 @@ class AddTrialOriginFragment : Fragment() {
 
     //カメラを移動
     private fun moveCamera() {
-        // Add a marker in Sydney and move the camera
         val okinawa = LatLng(26.39987724386553, 127.74766655445417)
         map?.apply {
             moveCamera(CameraUpdateFactory.newLatLngZoom(okinawa, ZOOM_SIZE))
@@ -97,7 +92,7 @@ class AddTrialOriginFragment : Fragment() {
                 latLng.latitude,
                 latLng.longitude
             )
-
+            //マップをクリア
             map.clear()
 
             val marker = map.addMarker(

@@ -33,7 +33,8 @@ class AddTrialViewModel : ViewModel() {
         getTrialList("testUserID")
     }
 
-    fun getTrialList(userId: String) {
+    //リポジトリからテストデータを持ってくる
+    private fun getTrialList(userId: String) {
         viewModelScope.launch {
             trialRepositoryDummy.getTriedTrialByUserId(userId).collect{
                 when(it) {
@@ -46,18 +47,4 @@ class AddTrialViewModel : ViewModel() {
             }
         }
     }
-
-//    fun getTrialList(userId: String) {
-//        viewModelScope.launch {
-//            trialRepositoryDummy.getTrialsNear(LatLng(26.526230, 128.030372), 100.0).collect{
-//                when(it) {
-//                    is Result.Loading -> _collectState.value = "Loading"
-//                    is Result.Success -> {
-//                        _collectState.value = "Success"
-//                        _testData.value = it.data!!}
-//                    is Result.Error -> _collectState.value = "Error"
-//                }
-//            }
-//        }
-//    }
 }
