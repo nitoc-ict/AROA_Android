@@ -9,7 +9,6 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import jp.ac.okinawa_ct.nitoc_ict.aroa.databinding.FragmentCheckRecordListBinding
-import jp.ac.okinawa_ct.nitoc_ict.aroa.ui.checkrecord.RecordListAdapter
 
 class CheckRecordListFragment : Fragment() {
 

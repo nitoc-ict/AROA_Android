@@ -25,12 +25,22 @@ class RecordRepositoryDummy: RecordRepository {
     }
 
     override fun getRecords(
-        trial: Trial,
+        trialId: String,
         startRank: Int,
         maxResult: Int
-    ): Flow<Result<List<Record>>> {
-        TODO("Not yet implemented")
-    }
+    ): Flow<Result<List<Record>>> =
+        flow<Result<List<Record>>> {
+            delay(1000)
+            emit(Result.Success(testRecordList))
+        }.catch {
+            when(it) {
+                is Exception -> {
+                    emit(Result.Error(true, it))
+                }
+            }
+        }.onStart {
+            emit(Result.Loading)
+        }.flowOn(Dispatchers.IO)
 
     override fun createOrUpdateRecord(trial: Trial, record: Record): Flow<Result<Record>> {
         TODO("Not yet implemented")
