@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
@@ -48,6 +49,12 @@ class RecordDetailFragment : Fragment() {
         val args = RecordDetailFragmentArgs.fromBundle(requireArguments())
         viewModel.setTrialId(args.trialId)
         viewModel.setRecordId(args.recordId)
+        binding.checkRankingButton.setOnClickListener {
+            val action = RecordDetailFragmentDirections.actionRecordDetailFragmentToRecordRankingFragment(
+                args.trialId
+            )
+            this.findNavController().navigate(action)
+        }
         return binding.root
     }
 
