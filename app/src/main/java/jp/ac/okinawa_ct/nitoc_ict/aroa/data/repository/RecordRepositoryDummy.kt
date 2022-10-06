@@ -10,13 +10,13 @@ import kotlinx.coroutines.flow.*
 class RecordRepositoryDummy: RecordRepository {
     private val testRecordList = mutableListOf<Record>(
         Record.MarathonRecord(
-            "testUserId1", 140,2
+            "testUserId1", "testTrialID_1","testTrialName_1",140,2,"testRecordId1"
         ),
         Record.MarathonRecord(
-            "testUserId2",150,3
+            "testUserId2","testTrialID_1","testTrialName_1",150,3,"testRecordId2"
         ),
         Record.MarathonRecord(
-            "testUserId3",110,1
+            "testUserId3","testTrialID_1","testTrialName_1",110,1,"testRecordId3"
         ),
     )
 
@@ -40,6 +40,20 @@ class RecordRepositoryDummy: RecordRepository {
         flow<Result<List<Record>>> {
             delay(1000)
             emit(Result.Success(testRecordList))
+        }.catch {
+            when(it) {
+                is Exception -> {
+                    emit(Result.Error(true, it))
+                }
+            }
+        }.onStart {
+            emit(Result.Loading)
+        }.flowOn(Dispatchers.IO)
+
+    override fun getRecordByRecordId(recordId: String): Flow<Result<Record>> =
+        flow<Result<Record>> {
+            delay(1000)
+            emit(Result.Success(testRecordList[0]))
         }.catch {
             when(it) {
                 is Exception -> {
