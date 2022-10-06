@@ -31,7 +31,8 @@ class RecordRepositoryDummy: RecordRepository {
     ): Flow<Result<List<Record>>> =
         flow<Result<List<Record>>> {
             delay(1000)
-            emit(Result.Success(testRecordList))
+            val comparator : Comparator<Record> = compareBy { it.rank }
+            emit(Result.Success(testRecordList.sortedWith(comparator)))
         }.catch {
             when(it) {
                 is Exception -> {
