@@ -1,6 +1,7 @@
 package jp.ac.okinawa_ct.nitoc_ict.aroa.ui.detail
 
 import android.app.Application
+import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -36,17 +37,16 @@ class TrialDetailViewModel(application: Application) : AndroidViewModel(applicat
     private val _trialId = MutableLiveData<String>()
     val trialId: LiveData<String> get() = _trialId
 
-    private val _trialName = MutableLiveData<String>()
-    val trialName: LiveData<String> get() = _trialName
-
-    private val _trialAuthorUserId = MutableLiveData<String>()
-    val trialAuthorUserId: LiveData<String> get() = _trialAuthorUserId
-
     private val _trialPosition = MutableLiveData<LatLng>()
     val trialPosition: LiveData<LatLng> get() = _trialPosition
 
     private val _trialCourse = MutableLiveData<List<LatLng>>()
     val trialCourse: LiveData<List<LatLng>> get() = _trialCourse
+
+    private val _trialDistance = MutableLiveData<Long>().apply {
+        value = 0
+    }
+    val trialDistance: LiveData<Long> get() = _trialDistance
 
     fun setTrialId(id: String) {
         _trialId.value = id
@@ -70,12 +70,18 @@ class TrialDetailViewModel(application: Application) : AndroidViewModel(applicat
         _trial.value?.let {
             when(it) {
                 is Trial.Marathon -> {
-                    _trialName.value = it.name
-                    _trialAuthorUserId.value = it.authorUserId
                     _trialPosition.value = it.position
                     _trialCourse.value = it.course
                 }
                 else -> "Error"
+            }
+        }
+    }
+
+    fun getDistance() {
+        for (route in _directionsResult.value!!.routes) {
+            for (leg in route.legs) {
+                _trialDistance.value = _trialDistance.value?.plus(leg.distance.inMeters)
             }
         }
     }
@@ -115,6 +121,4 @@ class TrialDetailViewModel(application: Application) : AndroidViewModel(applicat
             _directionsResult.value = result
         }
     }
-
-
 }

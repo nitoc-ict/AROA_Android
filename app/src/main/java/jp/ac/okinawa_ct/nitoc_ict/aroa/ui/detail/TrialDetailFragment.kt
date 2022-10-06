@@ -1,6 +1,7 @@
 package jp.ac.okinawa_ct.nitoc_ict.aroa.ui.detail
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -53,7 +54,7 @@ class TrialDetailFragment : Fragment() {
             binding.startTrialButton.visibility = View.INVISIBLE
         }else {
             binding.startTrialButton.setOnClickListener {
-
+                //トライアルに参加
             }
         }
         viewModel.setTrialId(args.trialId)
@@ -71,6 +72,8 @@ class TrialDetailFragment : Fragment() {
     private fun observeLiveData() {
         viewModel.directionsResult.observe(viewLifecycleOwner, Observer{
             updatePolyline(it, map)
+            viewModel.getDistance()
+            binding.detailTrialDistance.text = viewModel.trialDistance.value.toString() + "m"
         })
 
         viewModel.trialId.observe(viewLifecycleOwner, Observer {
@@ -80,9 +83,9 @@ class TrialDetailFragment : Fragment() {
         viewModel.trial.observe(viewLifecycleOwner, Observer {
             viewModel.assignmentTrialData()
             map?.moveCamera(
-                CameraUpdateFactory.newLatLngZoom(viewModel.trialPosition.value!!, ZOOM_SIZE))
-            binding.detailTrialName.text = viewModel.trialName.value
-            binding.detailTrialAuthorUserId.text = viewModel.trialId.value
+                CameraUpdateFactory.newLatLngZoom(viewModel.trial.value!!.position, ZOOM_SIZE))
+            binding.detailTrialName.text = viewModel.trial.value!!.name
+            binding.detailTrialAuthorUserId.text = viewModel.trial.value!!.authorUserId
             binding.detailTrialPosition.text = viewModel.trialPosition.value.toString()
         })
 
@@ -92,7 +95,6 @@ class TrialDetailFragment : Fragment() {
             map?.addMarker(MarkerOptions().position(viewModel.origin.value!!).title("origin"))
             map?.addMarker(MarkerOptions().position(viewModel.dest.value!!).title("dest"))
         })
-        viewModel
     }
 
     //Polylineを更新

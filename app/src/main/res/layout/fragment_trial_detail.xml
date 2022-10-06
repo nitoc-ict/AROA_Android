@@ -38,12 +38,18 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:textSize="12dp"/>
+        <TextView
+            android:id="@+id/detail_trial_distance"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:textSize="12dp"/>
         <Button
             android:id="@+id/start_trial_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:text="トライアルを開始"
+            android:text="トライアルに参加"
             android:textSize="24dp"/>
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
