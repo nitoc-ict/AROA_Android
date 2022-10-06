@@ -39,4 +39,6 @@ interface RecordRepository {
     fun createOrUpdateRecord(trial: Trial, record: Record): Flow<Result<Record>>
 
     fun getMyRecords(userId: String): Flow<Result<List<Record>>>
+
+    fun getRecordByRecordId(recordId: String): Flow<Result<Record>>
 }
