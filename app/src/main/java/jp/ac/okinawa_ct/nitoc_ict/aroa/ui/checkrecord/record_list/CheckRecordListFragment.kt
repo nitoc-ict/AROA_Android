@@ -25,7 +25,7 @@ class CheckRecordListFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val viewModel =
+        viewModel =
             ViewModelProvider(this).get(CheckRecordListViewModel::class.java)
 
         _binding = FragmentCheckRecordListBinding.inflate(inflater, container, false)
@@ -38,7 +38,10 @@ class CheckRecordListFragment : Fragment() {
 
         adapter.setOnItemClickListener { view, position ->
             val action = CheckRecordListFragmentDirections
-                .actionCheckRecordListFragmentToRecordDetailFragment()
+                .actionCheckRecordListFragmentToRecordDetailFragment(
+                    viewModel.testRecordList.value!!.get(position).recordId,
+                    viewModel.testRecordList.value!!.get(position).trialId
+                )
             this.findNavController().navigate(action)
         }
 

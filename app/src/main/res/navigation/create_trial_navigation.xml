@@ -64,7 +64,7 @@
     <fragment
         android:id="@+id/trialDetailFragment"
         android:name="jp.ac.okinawa_ct.nitoc_ict.aroa.ui.detail.TrialDetailFragment"
-        android:label="TrialDetailFragment" >
+        android:label="トライアルの詳細" >
         <argument
             android:name="trial_id"
             app:argType="string" />

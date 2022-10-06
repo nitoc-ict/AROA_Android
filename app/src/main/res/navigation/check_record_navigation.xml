@@ -19,5 +19,12 @@
         android:id="@+id/recordDetailFragment"
         android:name="jp.ac.okinawa_ct.nitoc_ict.aroa.ui.checkrecord.record_detail.RecordDetailFragment"
         android:label="fragment_check_record_detail"
-        tools:layout="@layout/fragment_record_detail"/>
+        tools:layout="@layout/fragment_record_detail">
+        <argument
+            android:name="record_id"
+            app:argType="string"/>
+        <argument
+            android:name="trial_id"
+            app:argType="string" />
+    </fragment>
 </navigation>
