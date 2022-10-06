@@ -1,9 +1,12 @@
 package jp.ac.okinawa_ct.nitoc_ict.aroa.ui.home
 
+import android.content.pm.PackageManager
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
@@ -18,6 +21,7 @@ import jp.ac.okinawa_ct.nitoc_ict.aroa.databinding.FragmentHomeBinding
 
 
 class HomeFragment : Fragment() {
+    private val REQUEST_LOCATION_PERMISSION = 1
 
     private var _binding: FragmentHomeBinding? = null
 
@@ -34,6 +38,7 @@ class HomeFragment : Fragment() {
         map = googleMap
         moveCamera()
         setMarkerClick(googleMap)
+        enableMyLocation()
     }
 
     override fun onCreateView(
@@ -81,6 +86,37 @@ class HomeFragment : Fragment() {
                     this.findNavController().navigate(action)
                 }
                 return@setOnMarkerClickListener true
+            }
+        }
+    }
+
+    private fun isPermissionGranted() : Boolean {
+        return ContextCompat.checkSelfPermission(
+            requireContext(),
+            android.Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED
+    }
+
+    private fun enableMyLocation() {
+        if (isPermissionGranted()) {
+            map.isMyLocationEnabled = true
+        }
+        else {
+            ActivityCompat.requestPermissions(
+                this.requireActivity(),
+                arrayOf<String>(android.Manifest.permission.ACCESS_FINE_LOCATION),
+                REQUEST_LOCATION_PERMISSION
+            )
+        }
+    }
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<String>,
+        grantResults: IntArray) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        if (requestCode == REQUEST_LOCATION_PERMISSION) {
+            if (grantResults.contains(PackageManager.PERMISSION_GRANTED)) {
+                enableMyLocation()
             }
         }
     }
