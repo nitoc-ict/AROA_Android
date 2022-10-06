@@ -71,6 +71,18 @@
         <argument
             android:name="can_start_trial"
             app:argType="boolean"/>
+        <action
+            android:id="@+id/action_trialDetailFragment_to_recordRankingFragment"
+            app:destination="@id/recordRankingFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/recordRankingFragment"
+        android:name="jp.ac.okinawa_ct.nitoc_ict.aroa.ui.checkrecord.record_ranking.RecordRankingFragment"
+        android:label="fragment_record_ranking"
+        tools:layout="@layout/fragment_record_ranking" >
+        <argument
+            android:name="trial_Id"
+            app:argType="string" />
     </fragment>
 
 

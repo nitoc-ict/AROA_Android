@@ -57,6 +57,12 @@ class TrialDetailFragment : Fragment() {
                 //トライアルに参加
             }
         }
+        binding.checkRankingButton.setOnClickListener {
+            val action = TrialDetailFragmentDirections.actionTrialDetailFragmentToRecordRankingFragment(
+                args.trialId
+            )
+            this.findNavController().navigate(action)
+        }
         viewModel.setTrialId(args.trialId)
 
         return binding.root
