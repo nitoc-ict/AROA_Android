@@ -35,10 +35,4 @@ class RecordRankingViewModel : ViewModel() {
             }
         }
     }
-
-    private fun sortRanking() {
-
-    }
-
-
 }
