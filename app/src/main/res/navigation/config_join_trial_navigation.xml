@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/config_join_trial_navigation"
+    app:startDestination="@id/navigation_config_join_trial">
+
+    <fragment
+        android:id="@+id/navigation_config_join_trial"
+        android:name="jp.ac.okinawa_ct.nitoc_ict.aroa.ui.config_join_trial.ConfigJoinTrialFragment"
+        android:label="@string/title_config_join_trial"
+        tools:layout="@layout/fragment_config_join_trial">
+        <action
+            android:id="@+id/action_navigation_config_join_trial_to_navigation_select_ble_device"
+            app:destination="@id/navigation_select_ble_device" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/navigation_select_ble_device"
+        android:name="jp.ac.okinawa_ct.nitoc_ict.aroa.ui.select_ble_device.SelectBleDeviceFragment"
+        android:label="@string/title_select_ble_device"
+        tools:layout="@layout/fragment_select_ble_device">
+        <action
+            android:id="@+id/action_navigation_select_ble_device_to_navigation_config_join_trial"
+            app:destination="@id/navigation_config_join_trial" />
+    </fragment>
+
+</navigation>
