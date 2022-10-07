@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/create_trial_navigation"
+    app:startDestination="@id/navigation_create_trial">
+
+    <fragment
+        android:id="@+id/navigation_create_trial"
+        android:name="jp.ac.okinawa_ct.nitoc_ict.aroa.ui.addtrial.start.AddTrialFragment"
+        android:label="初期画面"
+        tools:layout="@layout/fragment_add_trial" >
+        <action
+            android:id="@+id/action_navigation_add_trial_to_navigation_add_trial_origin"
+            app:destination="@id/navigation_add_trial_origin" />
+        <action
+            android:id="@+id/action_navigation_create_trial_to_trialDetailFragment"
+            app:destination="@id/trialDetailFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/navigation_add_trial_origin"
+        android:name="jp.ac.okinawa_ct.nitoc_ict.aroa.ui.addtrial.origin.AddTrialOriginFragment"
+        android:label="スタート地点"
+        tools:layout="@layout/fragment_add_trial_origin">
+        <action
+            android:id="@+id/action_navigation_add_trial_origin_to_navigation_add_trial_dest"
+            app:destination="@id/navigation_add_trial_dest" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/navigation_add_trial_dest"
+        android:name="jp.ac.okinawa_ct.nitoc_ict.aroa.ui.addtrial.dest.AddTrialDestFragment"
+        android:label="ゴール地点"
+        tools:layout="@layout/fragment_add_trial_dest">
+        <action
+            android:id="@+id/action_navigation_add_trial_dest_to_navigation_add_trial_maps"
+            app:destination="@id/navigation_add_trial_maps"
+            app:popUpTo="@id/navigation_add_trial_dest" />
+        <argument
+            android:name="originLatLng"
+            app:argType="com.google.android.gms.maps.model.LatLng"
+            app:nullable="false" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/navigation_add_trial_maps"
+        android:name="jp.ac.okinawa_ct.nitoc_ict.aroa.ui.addtrial.waypoints.AddTrialMapsFragment"
+        android:label="中継地点"
+        tools:layout="@layout/fragment_add_trial_maps" >
+        <action
+            android:id="@+id/action_navigation_add_trial_maps_to_navigation_add_trial"
+            app:destination="@id/navigation_create_trial"
+            app:popUpTo="@id/navigation_create_trial" />
+        <argument
+            android:name="originLatLng"
+            app:argType="com.google.android.gms.maps.model.LatLng"
+            app:nullable="false" />
+        <argument
+            android:name="destLatLng"
+            app:argType="com.google.android.gms.maps.model.LatLng"
+            app:nullable="false" />
+    </fragment>
+    <fragment
+        android:id="@+id/trialDetailFragment"
+        android:name="jp.ac.okinawa_ct.nitoc_ict.aroa.ui.detail.TrialDetailFragment"
+        android:label="トライアルの詳細" >
+        <argument
+            android:name="trial_id"
+            app:argType="string" />
+        <argument
+            android:name="can_start_trial"
+            app:argType="boolean"/>
+        <action
+            android:id="@+id/action_trialDetailFragment_to_recordRankingFragment"
+            app:destination="@id/recordRankingFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/recordRankingFragment"
+        android:name="jp.ac.okinawa_ct.nitoc_ict.aroa.ui.checkrecord.record_ranking.RecordRankingFragment"
+        android:label="fragment_record_ranking"
+        tools:layout="@layout/fragment_record_ranking" >
+        <argument
+            android:name="trial_Id"
+            app:argType="string" />
+    </fragment>
+
+
+</navigation>

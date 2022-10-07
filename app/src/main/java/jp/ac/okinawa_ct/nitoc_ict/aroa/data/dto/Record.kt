@@ -1,5 +1,8 @@
 package jp.ac.okinawa_ct.nitoc_ict.aroa.data.dto
 
+import android.gesture.GestureOverlayView
+import java.util.*
+
 /**
  * トライアルの記録を表現するクラス
  *
@@ -9,7 +12,9 @@ package jp.ac.okinawa_ct.nitoc_ict.aroa.data.dto
 sealed class Record {
     abstract val userId: String
     abstract val trialId: String
+    abstract val trialName: String
     abstract val rank: Int
+    abstract val recordId: String
 
     /**
      * マラソンのトライアルの記録を表現するクラス
@@ -19,8 +24,10 @@ sealed class Record {
     data class MarathonRecord(
         override val userId: String,
         override val trialId: String,
+        override val trialName: String,
         val time: Long,
         override val rank: Int = -1,
+        override val recordId: String = UUID.randomUUID().toString(),
     ): Record()
 
     /**
@@ -31,7 +38,9 @@ sealed class Record {
     data class DanglingRecord(
         override val userId: String,
         override val trialId: String,
+        override val trialName: String,
         val time: Long,
         override val rank: Int = -1,
+        override val recordId: String,
     ): Record()
 }

@@ -26,7 +26,7 @@ interface RecordRepository {
      * @param startRank 何位から取得するか. 1以上である必要がある。
      * @param maxResult startRankで指定された順位から最大でいくつの[Record]を取得するか
      */
-    fun getRecords(trial: Trial, startRank: Int, maxResult: Int): Flow<Result<List<Record>>>
+    fun getRecords(trialId: String, startRank: Int, maxResult: Int): Flow<Result<List<Record>>>
 
     /**
      * 指定された[Trial]のランキングに[Record]を追加する.すでに同じユーザーの記録がある場合は上書きする
@@ -37,4 +37,8 @@ interface RecordRepository {
      * @return データベースへの送信委成功した時は実際のランキングが保存された[Record]
      */
     fun createOrUpdateRecord(trial: Trial, record: Record): Flow<Result<Record>>
+
+    fun getMyRecords(userId: String): Flow<Result<List<Record>>>
+
+    fun getRecordByRecordId(recordId: String): Flow<Result<Record>>
 }
