@@ -14,10 +14,12 @@ import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
+import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 import jp.ac.okinawa_ct.nitoc_ict.aroa.R
 import jp.ac.okinawa_ct.nitoc_ict.aroa.databinding.FragmentHomeBinding
+import jp.ac.okinawa_ct.nitoc_ict.aroa.util.ConverterVectorToBitmap
 
 
 class HomeFragment : Fragment() {
@@ -62,14 +64,21 @@ class HomeFragment : Fragment() {
     private fun observeLiveData() {
         homeViewModel.foundTrials.observe(viewLifecycleOwner) {
             for (data in it){
-                map.addMarker(MarkerOptions().position(data.position).title(data.id))
+                map.addMarker(MarkerOptions()
+                    .position(data.position)
+                    .title(data.id)
+                    .icon(
+                        BitmapDescriptorFactory.fromBitmap(
+                            ConverterVectorToBitmap().getBitmapFromVectorDrawable(
+                        requireContext(),R.drawable.ic_baseline_trial_circle_36)))
+                    .anchor(0.5F,0.5F))
             }
         }
     }
 
     private fun moveCamera() {
         val cUpdate = CameraUpdateFactory.newLatLngZoom(
-            LatLng(26.526230, 128.030372), 16f
+            LatLng(26.526230, 128.030372), 14f
         )
         map.apply {
             moveCamera(cUpdate)
