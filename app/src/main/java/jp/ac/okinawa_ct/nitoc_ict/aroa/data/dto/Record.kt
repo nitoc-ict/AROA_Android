@@ -25,6 +25,7 @@ sealed class Record {
         override val userId: String,
         override val trialId: String,
         override val trialName: String,
+        val distance: Long,
         val time: Long,
         override val rank: Int = -1,
         override val recordId: String = UUID.randomUUID().toString(),
