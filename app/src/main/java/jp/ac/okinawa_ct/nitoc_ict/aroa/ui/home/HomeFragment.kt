@@ -1,7 +1,9 @@
 package jp.ac.okinawa_ct.nitoc_ict.aroa.ui.home
 
 import android.content.pm.PackageManager
+import android.location.Location
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,6 +12,8 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
+import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
@@ -27,20 +31,19 @@ class HomeFragment : Fragment() {
 
     private var _binding: FragmentHomeBinding? = null
 
-    // This property is only valid between onCreateView and
-    // onDestroyView.
     private val binding get() = _binding!!
 
     private lateinit var map : GoogleMap
-
     private lateinit var homeViewModel: HomeViewModel
+
+    private lateinit var fusedLocationClient: FusedLocationProviderClient
+    private var currentPosition: LatLng? = null
 
 
     private val callback = OnMapReadyCallback { googleMap ->
         map = googleMap
-        moveCamera()
-        setMarkerClick(googleMap)
         enableMyLocation()
+        setMarkerClick(googleMap)
     }
 
     override fun onCreateView(
@@ -51,6 +54,8 @@ class HomeFragment : Fragment() {
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
         homeViewModel =
             ViewModelProvider(this).get(HomeViewModel::class.java)
+
+
         return binding.root
     }
 
@@ -73,15 +78,6 @@ class HomeFragment : Fragment() {
                         requireContext(),R.drawable.ic_baseline_trial_circle_36)))
                     .anchor(0.5F,0.5F))
             }
-        }
-    }
-
-    private fun moveCamera() {
-        val cUpdate = CameraUpdateFactory.newLatLngZoom(
-            LatLng(26.526230, 128.030372), 14f
-        )
-        map.apply {
-            moveCamera(cUpdate)
         }
     }
 
@@ -108,6 +104,21 @@ class HomeFragment : Fragment() {
     private fun enableMyLocation() {
         if (isPermissionGranted()) {
             map.isMyLocationEnabled = true
+
+            fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireActivity())
+            fusedLocationClient.lastLocation
+                .addOnSuccessListener { location : Location? ->
+                    currentPosition = LatLng(location!!.latitude,location.longitude)
+                    Log.i("HomeFragment","FusedLocationClient:${location.latitude.toString()}")
+                    map.apply {
+                        Log.i("HomeFragment","currentPosition:${currentPosition.toString()}")
+                        moveCamera(CameraUpdateFactory.newLatLngZoom(
+                            currentPosition!!, 16f
+                        ))
+//                        LatLng(26.526703736324663, 128.03039187339328)
+                        binding.progressBar.visibility = View.GONE
+                    }
+                }
         }
         else {
             ActivityCompat.requestPermissions(
