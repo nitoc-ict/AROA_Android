@@ -45,6 +45,7 @@ class CreatedTrialAdapter(
     override fun onBindViewHolder(bindingHolder: BindingHolder, position: Int) {
         val current = getItem(position)
         bindingHolder.binding.trialName.text = current.name
+        bindingHolder.binding.trialMakeDate.text = current.createDate
         bindingHolder.binding.itemViewGroup.setOnClickListener {
             onItemClickListener?.invoke(it,position)
         }

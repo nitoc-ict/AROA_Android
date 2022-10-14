@@ -4,15 +4,56 @@
     android:id="@+id/item_view_group"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical"
-    android:layout_marginTop="8dp"
-    android:layout_marginBottom="8dp">
+    android:layout_marginTop="8sp"
+    android:layout_marginBottom="8sp"
+    android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/trial_name"
-        android:layout_width="wrap_content"
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textSize="24sp" />
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="["
+            android:textSize="24sp" />
+
+        <TextView
+            android:id="@+id/trial_name"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="トライアル名"
+            android:textSize="24sp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="]"
+            android:textSize="24sp" />
+
+    </LinearLayout>
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="作成日:"
+            android:textSize="20sp" />
+
+        <TextView
+            android:id="@+id/trial_makeDate"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="トライアル作成日"
+            android:textSize="20sp" />
+
+    </LinearLayout>
 
 </LinearLayout>
-

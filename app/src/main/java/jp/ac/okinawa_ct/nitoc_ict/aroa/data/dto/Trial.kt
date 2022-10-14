@@ -15,6 +15,7 @@ sealed class Trial {
     abstract val name: String
     abstract val authorUserId: String
     abstract val position: LatLng
+    abstract val createDate: String
     abstract val id: String
 
     /**
@@ -27,6 +28,7 @@ sealed class Trial {
         override val authorUserId: String,
         override val position: LatLng,
         val course: List<LatLng>,
+        override val createDate: String,
         override val id: String = UUID.randomUUID().toString(),
     ) : Trial()
 
@@ -40,6 +42,7 @@ sealed class Trial {
         override val authorUserId: String,
         override val position: LatLng,
         val goalCount: Int,
+        override val createDate: String,
         override val id: String = UUID.randomUUID().toString(),
     ) : Trial()
 }

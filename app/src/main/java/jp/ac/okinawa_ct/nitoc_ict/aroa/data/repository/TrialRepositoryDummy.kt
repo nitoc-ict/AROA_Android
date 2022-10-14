@@ -25,7 +25,7 @@ class TrialRepositoryDummy : TrialRepository {
                 LatLng(26.526424, 128.030372),
                 LatLng(26.526230, 128.030372),
             ), // 沖縄高専の敷地内を回るコース
-            "testTrialID_1",
+            "2022月10月15日",
         ),
         Trial.Marathon(
             "沖縄高専外周コース2",
@@ -39,7 +39,7 @@ class TrialRepositoryDummy : TrialRepository {
                 LatLng(26.526424, 128.030372),
                 LatLng(26.526347, 128.029209),
             ), // 沖縄高専の敷地内を回るコース
-            "testTrialID_2",
+            "2022月10月15日",
         ),
         Trial.Marathon(
             "沖縄高専外周コース3",
@@ -53,7 +53,7 @@ class TrialRepositoryDummy : TrialRepository {
                 LatLng(26.526424, 128.030372),
                 LatLng(26.525823, 128.031147),
             ), // 沖縄高専の敷地内を回るコース
-            "testTrialID_3",
+            "2022月10月15日",
         ),
 
         )
