@@ -17,6 +17,10 @@ android {
         versionName "1.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+
+        ndk {
+            abiFilters 'armeabi-v7a'
+        }
     }
 
     buildTypes {
@@ -35,9 +39,16 @@ android {
     buildFeatures {
         viewBinding true
     }
+
+    packagingOptions {
+        doNotStrip '*/armeabi-v7a/*.so'
+    }
 }
 
 dependencies {
+    // Unity ライブラリ
+    implementation project(path: ':aroa_unity')
+    implementation project(path: ':aroa_data')
 
     // 基本的なライブラリ
     implementation 'androidx.core:core-ktx:1.8.0'
