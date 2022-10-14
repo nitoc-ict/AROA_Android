@@ -124,6 +124,7 @@ class RecordDetailViewModel : ViewModel() {
     }
 
     fun getDistance() {
+        _trialDistance.value = 0L
         for (route in _directionsResult.value!!.routes) {
             for (leg in route.legs) {
                 _trialDistance.value = _trialDistance.value?.plus(leg.distance.inMeters)
