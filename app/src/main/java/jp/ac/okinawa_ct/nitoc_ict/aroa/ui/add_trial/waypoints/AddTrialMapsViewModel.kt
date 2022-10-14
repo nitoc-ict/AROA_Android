@@ -12,7 +12,7 @@ import com.google.maps.model.DirectionsResult
 import jp.ac.okinawa_ct.nitoc_ict.aroa.data.dto.Result
 import jp.ac.okinawa_ct.nitoc_ict.aroa.data.dto.Trial
 import jp.ac.okinawa_ct.nitoc_ict.aroa.data.repository.TrialRepositoryDummy
-import jp.ac.okinawa_ct.nitoc_ict.aroa.ui.addtrial.DirectionsApiHelper
+import jp.ac.okinawa_ct.nitoc_ict.aroa.ui.add_trial.DirectionsApiHelper
 import kotlinx.coroutines.launch
 
 class AddTrialMapsViewModel(application: Application) : AndroidViewModel(application) {

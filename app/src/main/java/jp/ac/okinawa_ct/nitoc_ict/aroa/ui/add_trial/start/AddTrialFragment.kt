@@ -13,7 +13,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import jp.ac.okinawa_ct.nitoc_ict.aroa.databinding.FragmentAddTrialBinding
-import jp.ac.okinawa_ct.nitoc_ict.aroa.ui.addtrial.CreatedTrialAdapter
+import jp.ac.okinawa_ct.nitoc_ict.aroa.ui.add_trial.CreatedTrialAdapter
 
 class AddTrialFragment : Fragment() {
 

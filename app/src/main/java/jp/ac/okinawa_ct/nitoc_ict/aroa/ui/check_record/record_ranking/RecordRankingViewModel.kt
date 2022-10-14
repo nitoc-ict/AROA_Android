@@ -1,4 +1,4 @@
-package jp.ac.okinawa_ct.nitoc_ict.aroa.ui.checkrecord.record_ranking
+package jp.ac.okinawa_ct.nitoc_ict.aroa.ui.check_record.record_ranking
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData

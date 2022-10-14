@@ -199,7 +199,7 @@ class AddTrialDestFragment : Fragment() {
     // 線を引く
     private fun addPolyline(directionsResult: DirectionsResult, map: GoogleMap) {
         val polylineOptions = PolylineOptions()
-        polylineOptions.width(AddTrialDestFragment.POLYLINE_WIDTH)
+        polylineOptions.width(POLYLINE_WIDTH)
         // ARGB32bit形式.
         polylineOptions.color(R.color.map_polyline_stroke)
         val decodedPath = PolyUtil.decode(directionsResult.routes[0].overviewPolyline.encodedPath)

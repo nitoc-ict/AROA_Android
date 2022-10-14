@@ -1,4 +1,4 @@
-package jp.ac.okinawa_ct.nitoc_ict.aroa.ui.checkrecord.record_detail
+package jp.ac.okinawa_ct.nitoc_ict.aroa.ui.check_record.record_detail
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -19,7 +19,7 @@ import com.google.maps.android.PolyUtil
 import com.google.maps.model.DirectionsResult
 import jp.ac.okinawa_ct.nitoc_ict.aroa.R
 import jp.ac.okinawa_ct.nitoc_ict.aroa.databinding.FragmentRecordDetailBinding
-import jp.ac.okinawa_ct.nitoc_ict.aroa.ui.checkrecord.record_detail.RecordDetailFragmentArgs
+import jp.ac.okinawa_ct.nitoc_ict.aroa.ui.check_record.record_detail.RecordDetailFragmentArgs
 import jp.ac.okinawa_ct.nitoc_ict.aroa.util.TimeFormat
 
 class RecordDetailFragment : Fragment() {
