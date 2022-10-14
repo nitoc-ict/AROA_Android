@@ -1,5 +1,6 @@
 package jp.ac.okinawa_ct.nitoc_ict.aroa.ui.addtrial.dest
 
+import android.app.AlertDialog
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -17,6 +18,7 @@ import com.google.maps.android.PolyUtil
 import com.google.maps.model.DirectionsResult
 import jp.ac.okinawa_ct.nitoc_ict.aroa.R
 import jp.ac.okinawa_ct.nitoc_ict.aroa.databinding.FragmentAddTrialDestBinding
+import jp.ac.okinawa_ct.nitoc_ict.aroa.util.ConverterVectorToBitmap
 import java.util.*
 
 class AddTrialDestFragment : Fragment() {
@@ -38,7 +40,6 @@ class AddTrialDestFragment : Fragment() {
         map = googleMap
         moveCamera()
         setMapLongClick(googleMap)
-        setMarkerClick(googleMap)
         setOnMarkerDrag(googleMap)
     }
 
@@ -53,7 +54,17 @@ class AddTrialDestFragment : Fragment() {
         )
         viewModel = ViewModelProvider(this).get(AddTrialDestViewModel::class.java)
         viewModel.setOrigin(args.originLatLng)
-        binding.nextButton.setOnClickListener { viewModel.navStart() }
+        binding.nextButton.setOnClickListener {
+            if (viewModel.dest.value != null) {
+                viewModel.navStart()
+            }
+        }
+
+        val builder = AlertDialog.Builder(requireContext())
+        builder.setTitle("トライアルを作成").setMessage("ゴール地点を設定")
+            .setPositiveButton("ok",null)
+        builder.show()
+
         return binding.root
     }
 
@@ -91,7 +102,13 @@ class AddTrialDestFragment : Fragment() {
         // Add a marker in Sydney and move the camera
         val origin = LatLng(viewModel.origin.value!!.latitude, viewModel.origin.value!!.longitude)
         map?.apply {
-            addMarker(MarkerOptions().position(origin).title("Marker in Origin"))
+            addMarker(MarkerOptions()
+                .position(origin)
+                .title("Marker in Origin")
+                .icon(BitmapDescriptorFactory.fromBitmap(
+                    ConverterVectorToBitmap().getBitmapFromVectorDrawable(
+                requireContext(),R.drawable.ic_baseline_flag_circle_origin_36)))
+                .anchor(0.5F,0.5F))
             moveCamera(CameraUpdateFactory.newLatLngZoom(origin, ZOOM_SIZE))
         }
     }
@@ -110,37 +127,34 @@ class AddTrialDestFragment : Fragment() {
 
             map.addMarker(
                 MarkerOptions()
-                .position(
+                    .position(
                     LatLng(
                         viewModel.origin.value!!.latitude,
-                        viewModel.origin.value!!.longitude
-                    )
-                )
-                .title("Marker in Origin"))
+                        viewModel.origin.value!!.longitude))
+                    .title("Marker in Origin")
+                    .icon(BitmapDescriptorFactory.fromBitmap(
+                        ConverterVectorToBitmap().getBitmapFromVectorDrawable(
+                            requireContext(),R.drawable.ic_baseline_flag_circle_origin_36)))
+                    .anchor(0.5F,0.5F))
 
             val marker = map.addMarker(
                 MarkerOptions()
                     .position(latLng)
-                    .title("drop")
+                    .title("Marker in Dest")
                     .snippet(snippet)
                     .draggable(true)
+                    .icon(BitmapDescriptorFactory.fromBitmap(
+                        ConverterVectorToBitmap().getBitmapFromVectorDrawable(
+                            requireContext(),R.drawable.ic_baseline_flag_circle_dest_36)))
+                    .anchor(0.5F,0.5F)
             )
 
             if (marker != null) {
-                Log.i("DestFragment", "addMarker:${marker.position.toString()}")
                 viewModel.setDest(marker.position)
             }
         }
     }
 
-    //マーカーをクリック時にそのマーカーを削除
-    private fun setMarkerClick(map: GoogleMap) {
-        map.setOnMarkerClickListener{marker ->
-            viewModel.removeDest()
-            marker.remove()
-            return@setOnMarkerClickListener true
-        }
-    }
 
     //マーカーをドラッグ時に、マーカーのLatLngを更新
     private fun setOnMarkerDrag(map: GoogleMap) {

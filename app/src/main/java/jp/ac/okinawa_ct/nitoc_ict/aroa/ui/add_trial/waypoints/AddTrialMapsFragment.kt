@@ -1,5 +1,6 @@
 package jp.ac.okinawa_ct.nitoc_ict.aroa.ui.addtrial.waypoints
 
+import android.app.AlertDialog
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -18,6 +19,7 @@ import com.google.maps.android.PolyUtil
 import com.google.maps.model.DirectionsResult
 import jp.ac.okinawa_ct.nitoc_ict.aroa.R
 import jp.ac.okinawa_ct.nitoc_ict.aroa.databinding.FragmentAddTrialMapsBinding
+import jp.ac.okinawa_ct.nitoc_ict.aroa.util.ConverterVectorToBitmap
 import java.util.*
 
 class AddTrialMapsFragment : Fragment() {
@@ -59,6 +61,12 @@ class AddTrialMapsFragment : Fragment() {
         viewModel.setOrigin(args.originLatLng)
         viewModel.setDest(args.destLatLng)
         binding.saveButton.setOnClickListener { viewModel.createNewTrial() }
+
+        val builder = AlertDialog.Builder(requireContext())
+        builder.setTitle("トライアルを作成").setMessage("中継地点を設定")
+            .setPositiveButton("ok",null)
+        builder.show()
+
         return binding.root
     }
 
@@ -90,8 +98,16 @@ class AddTrialMapsFragment : Fragment() {
         val origin = LatLng(viewModel.origin.value!!.latitude, viewModel.origin.value!!.longitude)
         val dest = LatLng(viewModel.dest.value!!.latitude, viewModel.dest.value!!.longitude)
         map?.apply {
-            addMarker(MarkerOptions().position(origin).title("Marker in Origin"))
-            addMarker(MarkerOptions().position(dest).title("Marker in Dest"))
+            addMarker(MarkerOptions().position(origin).title("Marker in Origin")
+                .icon(BitmapDescriptorFactory.fromBitmap(
+                ConverterVectorToBitmap().getBitmapFromVectorDrawable(
+                    requireContext(),R.drawable.ic_baseline_flag_circle_origin_36)))
+                .anchor(0.5F,0.5F))
+            addMarker(MarkerOptions().position(dest).title("Marker in Dest")
+                .icon(BitmapDescriptorFactory.fromBitmap(
+                    ConverterVectorToBitmap().getBitmapFromVectorDrawable(
+                        requireContext(),R.drawable.ic_baseline_flag_circle_dest_36)))
+                .anchor(0.5F,0.5F))
             moveCamera(CameraUpdateFactory.newLatLngZoom(origin, ZOOM_SIZE))
         }
     }
@@ -112,6 +128,9 @@ class AddTrialMapsFragment : Fragment() {
                     .title("drop")
                     .snippet(snippet)
                     .draggable(true)
+                    .icon(BitmapDescriptorFactory.fromBitmap(ConverterVectorToBitmap().getBitmapFromVectorDrawable(
+                        requireContext(),R.drawable.ic_baseline_waypoints_circle_36)))
+                    .anchor(0.5F,0.5F)
             )
 
 
@@ -126,8 +145,12 @@ class AddTrialMapsFragment : Fragment() {
     //マーカーをクリック時にそのマーカーを削除
     private fun setMarkerClick(map: GoogleMap) {
         map.setOnMarkerClickListener{marker ->
-            viewModel.removeWaypointMarker(marker)
-            marker.remove()
+            if(marker.title != "Marker in Origin") {
+                if (marker.title != "Marker in Dest") {
+                    viewModel.removeWaypointMarker(marker)
+                    marker.remove()
+                }
+            }
             return@setOnMarkerClickListener true
         }
     }
