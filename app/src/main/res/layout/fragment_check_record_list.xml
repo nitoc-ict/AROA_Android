@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.checkrecord.record_list.CheckRecordListFragment">
+    tools:context=".ui.check_record.record_list.CheckRecordListFragment">
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recordList"
