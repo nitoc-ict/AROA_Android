@@ -2,7 +2,6 @@
 <resources>
     <color name="brand_tame">#FFF3821A</color>
     <color name="default_text_color">#40000000</color>
-
     <color name="purple_200">#FFBB86FC</color>
     <color name="purple_500">#FF6200EE</color>
     <color name="purple_700">#FF3700B3</color>
@@ -11,5 +10,4 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="map_polyline_stroke">#F3821A</color>
-    <color name="brand_tame">#F3821A</color>
 </resources>
