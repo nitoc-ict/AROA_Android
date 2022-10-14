@@ -13,7 +13,6 @@ import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
-import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 import com.google.android.gms.maps.model.Polyline
 import com.google.android.gms.maps.model.PolylineOptions
@@ -21,9 +20,6 @@ import com.google.maps.android.PolyUtil
 import com.google.maps.model.DirectionsResult
 import jp.ac.okinawa_ct.nitoc_ict.aroa.R
 import jp.ac.okinawa_ct.nitoc_ict.aroa.databinding.FragmentTrialDetailBinding
-import jp.ac.okinawa_ct.nitoc_ict.aroa.ui.addtrial.waypoints.AddTrialMapsFragment
-import jp.ac.okinawa_ct.nitoc_ict.aroa.ui.addtrial.waypoints.AddTrialMapsFragmentDirections
-import jp.ac.okinawa_ct.nitoc_ict.aroa.ui.addtrial.waypoints.AddTrialMapsViewModel
 
 class TrialDetailFragment : Fragment() {
     companion object {
@@ -38,6 +34,8 @@ class TrialDetailFragment : Fragment() {
     private lateinit var _binding: FragmentTrialDetailBinding
     private val binding get() = _binding
 
+    private lateinit var args: TrialDetailFragmentArgs
+
     private val callback = OnMapReadyCallback { googleMap ->
         map = googleMap
     }
@@ -49,7 +47,7 @@ class TrialDetailFragment : Fragment() {
     ): View {
         _binding = FragmentTrialDetailBinding.inflate(layoutInflater)
         viewModel = ViewModelProvider(this).get(TrialDetailViewModel::class.java)
-        val args = TrialDetailFragmentArgs.fromBundle(requireArguments())
+        args = TrialDetailFragmentArgs.fromBundle(requireArguments())
         if (!args.canStartTrial) {
             binding.startTrialButton.visibility = View.INVISIBLE
         }else {
@@ -58,12 +56,10 @@ class TrialDetailFragment : Fragment() {
             }
         }
         binding.checkRankingButton.setOnClickListener {
-            val action = TrialDetailFragmentDirections.actionTrialDetailFragmentToRecordRankingFragment(
-                args.trialId
-            )
-            this.findNavController().navigate(action)
+            viewModel.navStart()
         }
         viewModel.setTrialId(args.trialId)
+        viewModel.getTrialById()
 
         return binding.root
     }
@@ -76,16 +72,6 @@ class TrialDetailFragment : Fragment() {
     }
 
     private fun observeLiveData() {
-        viewModel.directionsResult.observe(viewLifecycleOwner, Observer{
-            updatePolyline(it, map)
-            viewModel.getDistance()
-            binding.detailTrialDistance.text = viewModel.trialDistance.value.toString() + "m"
-        })
-
-        viewModel.trialId.observe(viewLifecycleOwner, Observer {
-            viewModel.getTrialById()
-        })
-
         viewModel.trial.observe(viewLifecycleOwner, Observer {
             viewModel.assignmentTrialData()
             map?.moveCamera(
@@ -100,6 +86,21 @@ class TrialDetailFragment : Fragment() {
             viewModel.directionApiExecute()
             map?.addMarker(MarkerOptions().position(viewModel.origin.value!!).title("origin"))
             map?.addMarker(MarkerOptions().position(viewModel.dest.value!!).title("dest"))
+        })
+
+        viewModel.directionsResult.observe(viewLifecycleOwner, Observer{
+            updatePolyline(it, map)
+            viewModel.getDistance()
+            binding.detailTrialDistance.text = viewModel.trialDistance.value.toString() + "m"
+        })
+
+        viewModel.navFrag.observe(viewLifecycleOwner, Observer {
+            if (it == true) {
+                val action = TrialDetailFragmentDirections
+                    .actionTrialDetailFragmentToRecordRankingFragment(args.trialId)
+                this.findNavController().navigate(action)
+                viewModel.navCompleted()
+            }
         })
     }
 

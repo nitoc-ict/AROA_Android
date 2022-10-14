@@ -18,6 +18,18 @@ class RecordDetailViewModel : ViewModel() {
     private val trialRepositoryDummy = TrialRepositoryDummy()
     private val recordRepositoryDummy = RecordRepositoryDummy()
 
+    private val _navFrag = MutableLiveData<Boolean>()
+    val navFrag: LiveData<Boolean> get() = _navFrag
+
+    fun navStart() {
+        _navFrag.value = true
+    }
+
+    fun navCompleted() {
+        _navFrag.value = false
+        //LiveDataの初期化を行う
+    }
+
     private val _directionsResult = MutableLiveData<DirectionsResult?>()
     val directionsResult: LiveData<DirectionsResult?> = _directionsResult
 
@@ -27,9 +39,7 @@ class RecordDetailViewModel : ViewModel() {
     private val _dest = MutableLiveData<LatLng>()
     val dest: LiveData<LatLng> get() = _dest
 
-    private val _waypoints = MutableLiveData<ArrayList<LatLng>>().apply {
-        value = ArrayList()
-    }
+    private val _waypoints = MutableLiveData<ArrayList<LatLng>>()
     val waypoints: LiveData<ArrayList<LatLng>> get() = _waypoints
 
     private val _recordId = MutableLiveData<String>()
@@ -125,6 +135,7 @@ class RecordDetailViewModel : ViewModel() {
         _trialCourse.value?.let { courselatLng ->
             _origin.value = courselatLng.first()
             _dest.value = courselatLng.last()
+            _waypoints.value = ArrayList()
             for (latLng in courselatLng) {
                 when(latLng) {
                     courselatLng.first() -> continue

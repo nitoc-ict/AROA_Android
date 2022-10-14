@@ -19,6 +19,8 @@ import com.google.maps.android.PolyUtil
 import com.google.maps.model.DirectionsResult
 import jp.ac.okinawa_ct.nitoc_ict.aroa.R
 import jp.ac.okinawa_ct.nitoc_ict.aroa.databinding.FragmentRecordDetailBinding
+import jp.ac.okinawa_ct.nitoc_ict.aroa.ui.checkrecord.record_detail.RecordDetailFragmentArgs
+import jp.ac.okinawa_ct.nitoc_ict.aroa.util.TimeFormat
 
 class RecordDetailFragment : Fragment() {
 
@@ -35,6 +37,8 @@ class RecordDetailFragment : Fragment() {
     private var map: GoogleMap? = null
     private var polyline: Polyline? = null
 
+    private lateinit var args: RecordDetailFragmentArgs
+
     private val callback = OnMapReadyCallback { googleMap ->
         map = googleMap
     }
@@ -46,14 +50,11 @@ class RecordDetailFragment : Fragment() {
     ): View? {
         _binding = FragmentRecordDetailBinding.inflate(layoutInflater)
         viewModel = ViewModelProvider(this).get(RecordDetailViewModel::class.java)
-        val args = RecordDetailFragmentArgs.fromBundle(requireArguments())
+        args = RecordDetailFragmentArgs.fromBundle(requireArguments())
         viewModel.setTrialId(args.trialId)
         viewModel.setRecordId(args.recordId)
         binding.checkRankingButton.setOnClickListener {
-            val action = RecordDetailFragmentDirections.actionRecordDetailFragmentToRecordRankingFragment(
-                args.trialId
-            )
-            this.findNavController().navigate(action)
+            viewModel.navStart()
         }
         return binding.root
     }
@@ -72,7 +73,7 @@ class RecordDetailFragment : Fragment() {
 
         viewModel.record.observe(viewLifecycleOwner, Observer {
             viewModel.assignmentRecordDate()
-            binding.recordTime.text = viewModel.recordTime.value.toString() + "秒"
+            binding.recordTime.text = TimeFormat().convertLongToTimeString(viewModel.recordTime.value!!)
 
         })
 
@@ -100,6 +101,16 @@ class RecordDetailFragment : Fragment() {
             binding.recordDistance.text = viewModel.trialDistance.value.toString() + "m"
             val speed = viewModel.trialDistance.value!! / viewModel.recordTime.value!! * 3.6
             binding.recordSpeed.text = speed.toString() + "km/h"
+        })
+
+        viewModel.navFrag.observe(viewLifecycleOwner, Observer {
+            if (it == true) {
+                val action = RecordDetailFragmentDirections.actionRecordDetailFragmentToRecordRankingFragment(
+                    args.trialId
+                )
+                this.findNavController().navigate(action)
+                viewModel.navCompleted()
+            }
         })
     }
 

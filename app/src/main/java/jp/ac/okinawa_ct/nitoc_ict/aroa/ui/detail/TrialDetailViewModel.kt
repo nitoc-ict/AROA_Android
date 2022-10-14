@@ -17,6 +17,18 @@ import jp.ac.okinawa_ct.nitoc_ict.aroa.data.dto.Result as Result
 class TrialDetailViewModel(application: Application) : AndroidViewModel(application) {
     private val trialRepositoryDummy = TrialRepositoryDummy()
 
+    private val _navFrag = MutableLiveData<Boolean>()
+    val navFrag: LiveData<Boolean> get() = _navFrag
+
+    fun navStart() {
+        _navFrag.value = true
+    }
+
+    fun navCompleted() {
+        _navFrag.value = false
+        //LiveDataの初期化を行う
+    }
+
     private val _directionsResult = MutableLiveData<DirectionsResult?>()
     val directionsResult: LiveData<DirectionsResult?> = _directionsResult
 
@@ -26,9 +38,7 @@ class TrialDetailViewModel(application: Application) : AndroidViewModel(applicat
     private val _dest = MutableLiveData<LatLng>()
     val dest: LiveData<LatLng> get() = _dest
 
-    private val _waypoints = MutableLiveData<ArrayList<LatLng>>().apply {
-        value = ArrayList()
-    }
+    private val _waypoints = MutableLiveData<ArrayList<LatLng>>()
     val waypoints: LiveData<ArrayList<LatLng>> get() = _waypoints
 
     private val _trial = MutableLiveData<Trial>()
@@ -56,11 +66,11 @@ class TrialDetailViewModel(application: Application) : AndroidViewModel(applicat
         viewModelScope.launch {
             trialRepositoryDummy.getTrialById(_trialId.value!!).collect{
                 when(it) {
-                    is Result.Loading -> "Loading"
+                    is Result.Loading -> {}
                     is Result.Success -> {
                         _trial.value = it.data!!
                     }
-                    is Result.Error -> "Error"
+                    is Result.Error -> {}
                 }
             }
         }
@@ -73,12 +83,13 @@ class TrialDetailViewModel(application: Application) : AndroidViewModel(applicat
                     _trialPosition.value = it.position
                     _trialCourse.value = it.course
                 }
-                else -> "Error"
+                else -> {}
             }
         }
     }
 
     fun getDistance() {
+        _trialDistance.value = 0L
         for (route in _directionsResult.value!!.routes) {
             for (leg in route.legs) {
                 _trialDistance.value = _trialDistance.value?.plus(leg.distance.inMeters)
@@ -87,13 +98,14 @@ class TrialDetailViewModel(application: Application) : AndroidViewModel(applicat
     }
 
     fun courseTranslate() {
-        _trialCourse.value?.let { courselatLng ->
-            _origin.value = courselatLng.first()
-            _dest.value = courselatLng.last()
-            for (latLng in courselatLng) {
+        _trialCourse.value?.let { courselatLngs ->
+            _origin.value = courselatLngs.first()
+            _dest.value = courselatLngs.last()
+            _waypoints.value = ArrayList()
+            for (latLng in courselatLngs) {
                 when(latLng) {
-                    courselatLng.first() -> continue
-                    courselatLng.last() -> continue
+                    courselatLngs.first() -> continue
+                    courselatLngs.last() -> continue
                     else -> _waypoints.value?.add(latLng)
                 }
             }
