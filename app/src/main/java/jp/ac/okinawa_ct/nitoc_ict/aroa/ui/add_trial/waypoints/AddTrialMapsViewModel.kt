@@ -102,7 +102,7 @@ class AddTrialMapsViewModel(application: Application) : AndroidViewModel(applica
     fun createNewTrial() {
         val trialCourse =
             PolyUtil.decode(directionsResult.value!!.routes[0].overviewPolyline.encodedPath)
-        val trial = Trial.Marathon("", "", trialCourse[0], trialCourse,)
+        val trial = Trial.Marathon("", "", trialCourse[0], trialCourse,"2022年10月14日")
         viewModelScope.launch {
             trialRepositoryDummy.createTrial(trial).collect{
                 when(it) {
