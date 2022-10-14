@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import jp.ac.okinawa_ct.nitoc_ict.aroa.data.dto.Record
 import jp.ac.okinawa_ct.nitoc_ict.aroa.databinding.ListItemRecordBinding
+import jp.ac.okinawa_ct.nitoc_ict.aroa.util.TimeFormat
 
 typealias OnItemClickListener = (view: View, position: Int) -> Unit
 
@@ -43,7 +44,15 @@ class RecordListAdapter(
 
     override fun onBindViewHolder(bindingHolder: BindingHolder, position: Int) {
         val current = getItem(position)
-        bindingHolder.binding.recordTrialName.text = current.trialName
+        when(current) {
+            is Record.MarathonRecord -> {
+                bindingHolder.binding.recordTrialName.text = current.trialName
+                bindingHolder.binding.recordTrialDistance.text = current.distance.toString() + "m"
+                bindingHolder.binding.recordTrialTime.text = TimeFormat().convertLongToTimeString(current.time)
+            }
+            else -> {}
+        }
+
         bindingHolder.binding.recordTrialName.setOnClickListener {
             onItemClickListener?.invoke(it,position)
         }

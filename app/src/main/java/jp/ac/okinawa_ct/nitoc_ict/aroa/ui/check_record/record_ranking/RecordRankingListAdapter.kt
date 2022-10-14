@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import jp.ac.okinawa_ct.nitoc_ict.aroa.data.dto.Record
 import jp.ac.okinawa_ct.nitoc_ict.aroa.databinding.ListItemRecordRankingBinding
+import jp.ac.okinawa_ct.nitoc_ict.aroa.util.TimeFormat
 
 typealias OnItemClickListener = (view: View, position: Int) -> Unit
 
@@ -47,7 +48,8 @@ class RecordRankingListAdapter(
             is Record.MarathonRecord -> {
                 bindingHolder.binding.rankNum.text = current.rank.toString()
                 bindingHolder.binding.userName.text = current.userId
-                bindingHolder.binding.time.text = current.time.toString()}
+                bindingHolder.binding.time.text = TimeFormat().convertLongToTimeString(current.time)
+            }
             else -> {}
         }
     }
