@@ -15,8 +15,8 @@ class TrialRepositoryDummy : TrialRepository {
 
     private val testDataList = mutableListOf<Trial>(
         Trial.Marathon(
-            "テストマラソントライアル_1",
-            "testUserID",
+            "沖縄高専外周コース1",
+            "ひじかた",
             LatLng(26.526230, 128.030372),  // 沖縄高専
             listOf(
                 LatLng(26.526230, 128.030372),
@@ -28,8 +28,8 @@ class TrialRepositoryDummy : TrialRepository {
             "testTrialID_1",
         ),
         Trial.Marathon(
-            "テストマラソントライアル_2",
-            "testUserID",
+            "沖縄高専外周コース2",
+            "ひじかた",
             LatLng(26.526347, 128.029209),  // 沖縄高専
             listOf(
                 LatLng(26.526347, 128.029209),
@@ -42,8 +42,8 @@ class TrialRepositoryDummy : TrialRepository {
             "testTrialID_2",
         ),
         Trial.Marathon(
-            "テストマラソントライアル_3",
-            "testUserID",
+            "沖縄高専外周コース3",
+            "ひじかた",
             LatLng(26.525823, 128.031147),  // 沖縄高専
             listOf(
                 LatLng(26.525823, 128.031147),
