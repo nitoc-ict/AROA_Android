@@ -1,4 +1,4 @@
-package jp.ac.okinawa_ct.nitoc_ict.aroa.ui.addtrial.dest
+package jp.ac.okinawa_ct.nitoc_ict.aroa.ui.add_trial.dest
 
 import android.app.AlertDialog
 import android.os.Bundle

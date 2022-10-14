@@ -1,4 +1,4 @@
-package jp.ac.okinawa_ct.nitoc_ict.aroa.ui.addtrial.waypoints
+package jp.ac.okinawa_ct.nitoc_ict.aroa.ui.add_trial.waypoints
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel

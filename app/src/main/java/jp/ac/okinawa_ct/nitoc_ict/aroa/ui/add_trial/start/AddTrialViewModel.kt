@@ -1,4 +1,4 @@
-package jp.ac.okinawa_ct.nitoc_ict.aroa.ui.addtrial.start
+package jp.ac.okinawa_ct.nitoc_ict.aroa.ui.add_trial.start
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
