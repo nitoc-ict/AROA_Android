@@ -1,4 +1,4 @@
-package jp.ac.okinawa_ct.nitoc_ict.aroa.ui.addtrial.waypoints
+package jp.ac.okinawa_ct.nitoc_ict.aroa.ui.add_trial.waypoints
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
@@ -12,7 +12,7 @@ import com.google.maps.model.DirectionsResult
 import jp.ac.okinawa_ct.nitoc_ict.aroa.data.dto.Result
 import jp.ac.okinawa_ct.nitoc_ict.aroa.data.dto.Trial
 import jp.ac.okinawa_ct.nitoc_ict.aroa.data.repository.TrialRepositoryDummy
-import jp.ac.okinawa_ct.nitoc_ict.aroa.ui.addtrial.DirectionsApiHelper
+import jp.ac.okinawa_ct.nitoc_ict.aroa.ui.add_trial.DirectionsApiHelper
 import kotlinx.coroutines.launch
 
 class AddTrialMapsViewModel(application: Application) : AndroidViewModel(application) {
@@ -34,12 +34,6 @@ class AddTrialMapsViewModel(application: Application) : AndroidViewModel(applica
         value = ArrayList()
     }
     val waypointMarkers: LiveData<ArrayList<Marker>> get() = _waypointMarkers
-
-
-    init {
-        _origin.value = LatLng(26.387409, 127.729753)
-        _dest.value = LatLng(26.387409, 127.729753)
-    }
 
     fun setOrigin(latLng: LatLng) {
         _origin.value = latLng
@@ -102,7 +96,7 @@ class AddTrialMapsViewModel(application: Application) : AndroidViewModel(applica
     fun createNewTrial() {
         val trialCourse =
             PolyUtil.decode(directionsResult.value!!.routes[0].overviewPolyline.encodedPath)
-        val trial = Trial.Marathon("", "", trialCourse[0], trialCourse,)
+        val trial = Trial.Marathon("沖縄高専外周コース4", "ひじかた", trialCourse[0], trialCourse,"2022年10月14日")
         viewModelScope.launch {
             trialRepositoryDummy.createTrial(trial).collect{
                 when(it) {

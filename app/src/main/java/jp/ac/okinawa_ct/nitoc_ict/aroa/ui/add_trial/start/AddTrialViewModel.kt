@@ -1,5 +1,6 @@
-package jp.ac.okinawa_ct.nitoc_ict.aroa.ui.addtrial.start
+package jp.ac.okinawa_ct.nitoc_ict.aroa.ui.add_trial.start
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -29,19 +30,17 @@ class AddTrialViewModel : ViewModel() {
         _navFrag.value = null
     }
 
-    init {
-        getTrialList("testUserID")
-    }
-
     //リポジトリからテストデータを持ってくる
-    private fun getTrialList(userId: String) {
+    fun getTrialList(userId: String) {
         viewModelScope.launch {
             trialRepositoryDummy.getTriedTrialByUserId(userId).collect{
                 when(it) {
                     is Result.Loading -> _collectState.value = "Loading"
                     is Result.Success -> {
                         _collectState.value = "Success"
-                        _testData.value = it.data!!}
+                        _testData.value = it.data!!
+                        Log.i("getTrialList","testData:${it}")
+                    }
                     is Result.Error -> _collectState.value = "Error"
                 }
             }

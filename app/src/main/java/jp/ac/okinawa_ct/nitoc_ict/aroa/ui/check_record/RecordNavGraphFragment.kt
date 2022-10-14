@@ -1,4 +1,4 @@
-package jp.ac.okinawa_ct.nitoc_ict.aroa.ui.checkrecord
+package jp.ac.okinawa_ct.nitoc_ict.aroa.ui.check_record
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment

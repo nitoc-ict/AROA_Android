@@ -1,4 +1,4 @@
-package jp.ac.okinawa_ct.nitoc_ict.aroa.ui.checkrecord.record_list
+package jp.ac.okinawa_ct.nitoc_ict.aroa.ui.check_record.record_list
 
 import android.content.Context
 import android.view.LayoutInflater
@@ -46,14 +46,16 @@ class RecordListAdapter(
         val current = getItem(position)
         when(current) {
             is Record.MarathonRecord -> {
+                bindingHolder.binding.recordTrialDay.text = current.date
                 bindingHolder.binding.recordTrialName.text = current.trialName
                 bindingHolder.binding.recordTrialDistance.text = current.distance.toString() + "m"
                 bindingHolder.binding.recordTrialTime.text = TimeFormat().convertLongToTimeString(current.time)
+                bindingHolder.binding.recordTrialSpeed.text = (current.distance / current.time * 3.6).toString() + "km/h"
             }
             else -> {}
         }
 
-        bindingHolder.binding.recordTrialName.setOnClickListener {
+        bindingHolder.binding.root.setOnClickListener {
             onItemClickListener?.invoke(it,position)
         }
     }

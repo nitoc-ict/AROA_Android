@@ -1,4 +1,4 @@
-package jp.ac.okinawa_ct.nitoc_ict.aroa.ui.checkrecord.record_list
+package jp.ac.okinawa_ct.nitoc_ict.aroa.ui.check_record.record_list
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData

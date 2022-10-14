@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/checkRecordListFragment"
-        android:name="jp.ac.okinawa_ct.nitoc_ict.aroa.ui.checkrecord.record_list.CheckRecordListFragment"
+        android:name="jp.ac.okinawa_ct.nitoc_ict.aroa.ui.check_record.record_list.CheckRecordListFragment"
         android:label="fragment_check_record_list"
         tools:layout="@layout/fragment_check_record_list" >
         <action
@@ -17,7 +17,7 @@
 
     <fragment
         android:id="@+id/recordDetailFragment"
-        android:name="jp.ac.okinawa_ct.nitoc_ict.aroa.ui.checkrecord.record_detail.RecordDetailFragment"
+        android:name="jp.ac.okinawa_ct.nitoc_ict.aroa.ui.check_record.record_detail.RecordDetailFragment"
         android:label="fragment_check_record_detail"
         tools:layout="@layout/fragment_record_detail">
         <argument
@@ -32,7 +32,7 @@
     </fragment>
     <fragment
         android:id="@+id/recordRankingFragment"
-        android:name="jp.ac.okinawa_ct.nitoc_ict.aroa.ui.checkrecord.record_ranking.RecordRankingFragment"
+        android:name="jp.ac.okinawa_ct.nitoc_ict.aroa.ui.check_record.record_ranking.RecordRankingFragment"
         android:label="fragment_record_ranking"
         tools:layout="@layout/fragment_record_ranking" >
         <argument

@@ -1,4 +1,4 @@
-package jp.ac.okinawa_ct.nitoc_ict.aroa.ui.checkrecord.record_detail
+package jp.ac.okinawa_ct.nitoc_ict.aroa.ui.check_record.record_detail
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -19,7 +19,7 @@ import com.google.maps.android.PolyUtil
 import com.google.maps.model.DirectionsResult
 import jp.ac.okinawa_ct.nitoc_ict.aroa.R
 import jp.ac.okinawa_ct.nitoc_ict.aroa.databinding.FragmentRecordDetailBinding
-import jp.ac.okinawa_ct.nitoc_ict.aroa.ui.checkrecord.record_detail.RecordDetailFragmentArgs
+import jp.ac.okinawa_ct.nitoc_ict.aroa.ui.check_record.record_detail.RecordDetailFragmentArgs
 import jp.ac.okinawa_ct.nitoc_ict.aroa.util.TimeFormat
 
 class RecordDetailFragment : Fragment() {
@@ -51,8 +51,12 @@ class RecordDetailFragment : Fragment() {
         _binding = FragmentRecordDetailBinding.inflate(layoutInflater)
         viewModel = ViewModelProvider(this).get(RecordDetailViewModel::class.java)
         args = RecordDetailFragmentArgs.fromBundle(requireArguments())
+
         viewModel.setTrialId(args.trialId)
+        viewModel.getTrialById()
         viewModel.setRecordId(args.recordId)
+        viewModel.getRecordById()
+
         binding.checkRankingButton.setOnClickListener {
             viewModel.navStart()
         }
@@ -67,24 +71,16 @@ class RecordDetailFragment : Fragment() {
     }
 
     private fun observeLiveData() {
-        viewModel.recordId.observe(viewLifecycleOwner, Observer {
-            viewModel.getRecordById()
-        })
-
         viewModel.record.observe(viewLifecycleOwner, Observer {
             viewModel.assignmentRecordDate()
             binding.recordTime.text = TimeFormat().convertLongToTimeString(viewModel.recordTime.value!!)
 
         })
 
-        viewModel.trialId.observe(viewLifecycleOwner, Observer {
-            viewModel.getTrialById()
-        })
-
         viewModel.trial.observe(viewLifecycleOwner, Observer {
             viewModel.assignmentTrialData()
             map?.moveCamera(
-                CameraUpdateFactory.newLatLngZoom(viewModel.trialCourse.value!!.get(0), ZOOM_SIZE)
+                CameraUpdateFactory.newLatLngZoom((viewModel.trial.value!!.position), ZOOM_SIZE)
             )
         })
 

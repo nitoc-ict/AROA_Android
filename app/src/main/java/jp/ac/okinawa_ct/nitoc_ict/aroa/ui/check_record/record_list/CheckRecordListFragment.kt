@@ -1,4 +1,4 @@
-package jp.ac.okinawa_ct.nitoc_ict.aroa.ui.checkrecord.record_list
+package jp.ac.okinawa_ct.nitoc_ict.aroa.ui.check_record.record_list
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -8,6 +8,8 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.recyclerview.widget.LinearLayoutManager
 import jp.ac.okinawa_ct.nitoc_ict.aroa.databinding.FragmentCheckRecordListBinding
 
 class CheckRecordListFragment : Fragment() {
@@ -34,6 +36,10 @@ class CheckRecordListFragment : Fragment() {
         viewModel.testRecordList.observe(viewLifecycleOwner, Observer {
             adapter.submitList(it)
         })
+
+        val dividerItemDecoration = DividerItemDecoration(
+            requireContext(), LinearLayoutManager(requireContext()).getOrientation())
+        binding.recordList.addItemDecoration(dividerItemDecoration)
 
         adapter.setOnItemClickListener { view, position ->
             val action = CheckRecordListFragmentDirections

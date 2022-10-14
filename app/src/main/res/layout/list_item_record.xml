@@ -1,35 +1,76 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginTop="8dp"
-    android:layout_marginBottom="8dp"
-    android:background="@drawable/under_line">
+    android:layout_marginTop="8sp"
+    android:layout_marginBottom="8sp"
+    android:orientation="vertical">
+
 
     <TextView
-        android:id="@+id/record_trial_name"
+        android:id="@+id/record_trial_day"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:text="トライアル名"
-        android:textSize="24sp" />
+        android:text="20**年**月**日"
+        android:background="#6000B1BD"
+        android:textColor="#FFFFFF"
+        android:textSize="20sp"/>
 
-    <TextView
-        android:id="@+id/record_trial_distance"
-        android:layout_width="wrap_content"
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:text="distance"
-        android:textSize="24sp" />
+        android:orientation="horizontal">
 
-    <TextView
-        android:id="@+id/record_trial_time"
-        android:layout_width="wrap_content"
+
+        <TextView
+            android:id="@+id/record_trial_name"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="トライアル名"
+            android:textSize="24sp" />
+
+
+    </LinearLayout>
+
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:text="time"
-        android:textSize="24sp" />
+        android:orientation="horizontal">
 
+        <TextView
+            android:id="@+id/record_trial_distance"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="distance"
+            android:textSize="24sp" />
+
+        <TextView
+            android:id="@+id/record_trial_speed"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="speed"
+            android:textSize="24sp" />
+
+
+        <TextView
+            android:id="@+id/record_trial_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="time"
+            android:textSize="24sp" />
+
+
+    </LinearLayout>
 
 </LinearLayout>

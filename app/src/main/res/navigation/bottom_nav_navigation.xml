@@ -19,7 +19,7 @@
 
     <fragment
         android:id="@+id/navigation_check_record"
-        android:name="jp.ac.okinawa_ct.nitoc_ict.aroa.ui.checkrecord.RecordNavGraphFragment"
+        android:name="jp.ac.okinawa_ct.nitoc_ict.aroa.ui.check_record.RecordNavGraphFragment"
         android:label="@string/title_check_record"
         tools:layout="@layout/fragment_check_record_list" />
 </navigation>

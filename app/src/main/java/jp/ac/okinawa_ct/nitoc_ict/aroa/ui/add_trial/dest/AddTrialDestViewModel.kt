@@ -1,4 +1,4 @@
-package jp.ac.okinawa_ct.nitoc_ict.aroa.ui.addtrial.dest
+package jp.ac.okinawa_ct.nitoc_ict.aroa.ui.add_trial.dest
 
 import android.app.Application
 import android.util.Log
@@ -8,7 +8,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.google.android.gms.maps.model.LatLng
 import com.google.maps.model.DirectionsResult
-import jp.ac.okinawa_ct.nitoc_ict.aroa.ui.addtrial.DirectionsApiHelper
+import jp.ac.okinawa_ct.nitoc_ict.aroa.ui.add_trial.DirectionsApiHelper
 import kotlinx.coroutines.launch
 
 class AddTrialDestViewModel(application: Application) : AndroidViewModel(application) {

@@ -1,4 +1,4 @@
-package jp.ac.okinawa_ct.nitoc_ict.aroa.ui.checkrecord.record_detail
+package jp.ac.okinawa_ct.nitoc_ict.aroa.ui.check_record.record_detail
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -11,7 +11,7 @@ import jp.ac.okinawa_ct.nitoc_ict.aroa.data.dto.Result
 import jp.ac.okinawa_ct.nitoc_ict.aroa.data.dto.Trial
 import jp.ac.okinawa_ct.nitoc_ict.aroa.data.repository.RecordRepositoryDummy
 import jp.ac.okinawa_ct.nitoc_ict.aroa.data.repository.TrialRepositoryDummy
-import jp.ac.okinawa_ct.nitoc_ict.aroa.ui.addtrial.DirectionsApiHelper
+import jp.ac.okinawa_ct.nitoc_ict.aroa.ui.add_trial.DirectionsApiHelper
 import kotlinx.coroutines.launch
 
 class RecordDetailViewModel : ViewModel() {
@@ -124,6 +124,7 @@ class RecordDetailViewModel : ViewModel() {
     }
 
     fun getDistance() {
+        _trialDistance.value = 0L
         for (route in _directionsResult.value!!.routes) {
             for (leg in route.legs) {
                 _trialDistance.value = _trialDistance.value?.plus(leg.distance.inMeters)

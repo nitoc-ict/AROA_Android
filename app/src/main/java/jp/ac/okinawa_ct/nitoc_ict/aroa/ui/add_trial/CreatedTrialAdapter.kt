@@ -1,4 +1,4 @@
-package jp.ac.okinawa_ct.nitoc_ict.aroa.ui.addtrial
+package jp.ac.okinawa_ct.nitoc_ict.aroa.ui.add_trial
 
 import android.content.Context
 import android.view.LayoutInflater
@@ -45,6 +45,7 @@ class CreatedTrialAdapter(
     override fun onBindViewHolder(bindingHolder: BindingHolder, position: Int) {
         val current = getItem(position)
         bindingHolder.binding.trialName.text = current.name
+        bindingHolder.binding.trialMakeDate.text = current.createDate
         bindingHolder.binding.itemViewGroup.setOnClickListener {
             onItemClickListener?.invoke(it,position)
         }

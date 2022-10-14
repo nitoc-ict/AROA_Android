@@ -1,8 +1,9 @@
-package jp.ac.okinawa_ct.nitoc_ict.aroa.ui.addtrial.origin
+package jp.ac.okinawa_ct.nitoc_ict.aroa.ui.add_trial.origin
 
 import android.app.AlertDialog
 import android.content.DialogInterface
 import android.content.pm.PackageManager
+import android.location.Location
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -13,6 +14,8 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
+import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
@@ -39,9 +42,12 @@ class AddTrialOriginFragment : Fragment() {
     private lateinit var _binding: FragmentAddTrialOriginBinding
     private val binding get() = _binding
 
+    private lateinit var fusedLocationClient: FusedLocationProviderClient
+    private var currentPosition: LatLng? = null
+
     private val callback = OnMapReadyCallback { googleMap ->
         map = googleMap
-        moveCamera()
+        enableMyLocation()
         setMapLongClick(googleMap)
         setOnMarkerDrag(googleMap)
     }
@@ -90,14 +96,6 @@ class AddTrialOriginFragment : Fragment() {
         })
     }
 
-    //カメラを移動
-    private fun moveCamera() {
-        val okinawa = LatLng(26.39987724386553, 127.74766655445417)
-        map?.apply {
-            moveCamera(CameraUpdateFactory.newLatLngZoom(okinawa, ZOOM_SIZE))
-        }
-    }
-
     private fun isPermissionGranted() : Boolean {
         return ContextCompat.checkSelfPermission(
             requireContext(),
@@ -107,6 +105,20 @@ class AddTrialOriginFragment : Fragment() {
     private fun enableMyLocation() {
         if (isPermissionGranted()) {
             map!!.isMyLocationEnabled = true
+
+            fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireActivity())
+            fusedLocationClient.lastLocation
+                .addOnSuccessListener { location : Location? ->
+                    currentPosition = LatLng(location!!.latitude,location.longitude)
+                    Log.i("HomeFragment","FusedLocationClient:${location.latitude.toString()}")
+                    map?.apply {
+                        Log.i("HomeFragment","currentPosition:${currentPosition.toString()}")
+                        moveCamera(CameraUpdateFactory.newLatLngZoom(
+                            currentPosition!!, 14f
+                        ))
+//                        LatLng(26.40005132585051, 127.74633288655508)
+                    }
+                }
         }
         else {
             ActivityCompat.requestPermissions(
