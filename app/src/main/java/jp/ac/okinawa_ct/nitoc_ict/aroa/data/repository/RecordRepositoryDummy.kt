@@ -10,13 +10,13 @@ import kotlinx.coroutines.flow.*
 class RecordRepositoryDummy: RecordRepository {
     private val testRecordList = mutableListOf<Record>(
         Record.MarathonRecord(
-            "サイス", "testTrialID_1","沖縄高専外周",487,140,2,"testRecordId1"
+            "サイス", "testTrialID_1","沖縄高専外周","2022年10月15日",487,140,2,"testRecordId1"
         ),
         Record.MarathonRecord(
-            "知念","testTrialID_1","沖縄高専外周",487,150,3,"testRecordId2"
+            "知念","testTrialID_1","沖縄高専外周","2022年10月14日",487,150,3,"testRecordId2"
         ),
         Record.MarathonRecord(
-            "ひじかた","testTrialID_1","沖縄高専外周",487,110,1,"testRecordId3"
+            "ひじかた","testTrialID_1","沖縄高専外周","2022年10月13日",487,110,1,"testRecordId3"
         ),
     )
 

@@ -46,14 +46,16 @@ class RecordListAdapter(
         val current = getItem(position)
         when(current) {
             is Record.MarathonRecord -> {
+                bindingHolder.binding.recordTrialDay.text = current.date
                 bindingHolder.binding.recordTrialName.text = current.trialName
                 bindingHolder.binding.recordTrialDistance.text = current.distance.toString() + "m"
                 bindingHolder.binding.recordTrialTime.text = TimeFormat().convertLongToTimeString(current.time)
+                bindingHolder.binding.recordTrialSpeed.text = (current.distance / current.time * 3.6).toString() + "km/h"
             }
             else -> {}
         }
 
-        bindingHolder.binding.recordTrialName.setOnClickListener {
+        bindingHolder.binding.root.setOnClickListener {
             onItemClickListener?.invoke(it,position)
         }
     }
