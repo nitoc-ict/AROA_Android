@@ -1,11 +1,9 @@
 package jp.ac.okinawa_ct.nitoc_ict.aroa.ui.add_trial.start
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -28,11 +26,15 @@ class AddTrialFragment : Fragment() {
             ViewModelProvider(this).get(AddTrialViewModel::class.java)
         binding = FragmentAddTrialBinding.inflate(layoutInflater)
 
+        viewModel.getTrialList("testUserID")
+
         val adapter = CreatedTrialAdapter(binding.createdTrialList.context)
         binding.createdTrialList.adapter = adapter
+
         val dividerItemDecoration = DividerItemDecoration(
             requireContext(), LinearLayoutManager(requireContext()).getOrientation())
         binding.createdTrialList.addItemDecoration(dividerItemDecoration)
+
         //RecyclerViewのclickListener
         adapter.setOnItemClickListener { view, position ->
             val action = AddTrialFragmentDirections.actionNavigationCreateTrialToTrialDetailFragment(
@@ -43,7 +45,6 @@ class AddTrialFragment : Fragment() {
 
         viewModel.testData.observe(viewLifecycleOwner, Observer{
             it?.let {
-                Log.i("AddTrialFragment", "${it}")
                 adapter.submitList(it)
             }
         })

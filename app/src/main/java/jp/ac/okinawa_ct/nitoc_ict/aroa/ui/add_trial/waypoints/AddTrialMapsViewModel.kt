@@ -35,12 +35,6 @@ class AddTrialMapsViewModel(application: Application) : AndroidViewModel(applica
     }
     val waypointMarkers: LiveData<ArrayList<Marker>> get() = _waypointMarkers
 
-
-    init {
-        _origin.value = LatLng(26.387409, 127.729753)
-        _dest.value = LatLng(26.387409, 127.729753)
-    }
-
     fun setOrigin(latLng: LatLng) {
         _origin.value = latLng
     }
@@ -102,7 +96,7 @@ class AddTrialMapsViewModel(application: Application) : AndroidViewModel(applica
     fun createNewTrial() {
         val trialCourse =
             PolyUtil.decode(directionsResult.value!!.routes[0].overviewPolyline.encodedPath)
-        val trial = Trial.Marathon("", "", trialCourse[0], trialCourse,"2022年10月14日")
+        val trial = Trial.Marathon("沖縄高専外周コース4", "ひじかた", trialCourse[0], trialCourse,"2022年10月14日")
         viewModelScope.launch {
             trialRepositoryDummy.createTrial(trial).collect{
                 when(it) {
