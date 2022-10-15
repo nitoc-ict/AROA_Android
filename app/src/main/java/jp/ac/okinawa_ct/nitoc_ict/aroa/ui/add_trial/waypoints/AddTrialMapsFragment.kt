@@ -2,10 +2,13 @@ package jp.ac.okinawa_ct.nitoc_ict.aroa.ui.add_trial.waypoints
 
 import android.app.AlertDialog
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.widget.AppCompatEditText
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.Observer
@@ -60,12 +63,48 @@ class AddTrialMapsFragment : Fragment() {
         )
         viewModel.setOrigin(args.originLatLng)
         viewModel.setDest(args.destLatLng)
-        binding.saveButton.setOnClickListener { viewModel.createNewTrial() }
 
         val builder = AlertDialog.Builder(requireContext())
         builder.setTitle("トライアルを作成").setMessage("中継地点を設定")
             .setPositiveButton("ok",null)
         builder.show()
+
+        val dialogLayout = LayoutInflater.from(requireContext()).inflate(R.layout.trial_name_edit_dialog, null)
+        val editText = dialogLayout.findViewById<AppCompatEditText>(R.id.editTextDialog)
+
+        val dialog = AlertDialog.Builder(requireContext())
+            .setTitle("トライアル名の設定")
+            .setMessage("トライアル名を入力してください。")
+            .setView(dialogLayout)
+            .setPositiveButton("OK") { dialog, _ ->
+                // OKボタンを押したときの処理
+                viewModel.setTrialName(editText.text.toString())
+                viewModel.createNewTrial()
+                dialog.dismiss()
+            }
+            .setNegativeButton("キャンセル") { dialog, _ ->
+                // キャンセルボタンを押したときの処理
+
+                dialog.dismiss()
+            }
+            .create()
+
+        // AppCompatEditTextにTextChangedListenerをセット
+        editText.addTextChangedListener( object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+
+            override fun afterTextChanged(s: Editable?) {
+                // 1~32文字の時だけOKボタンを有効化する
+                dialog.getButton(AlertDialog.BUTTON_POSITIVE).isEnabled =
+                    !(s.isNullOrEmpty() || s.length > 16)
+            }
+        })
+
+        binding.saveButton.setOnClickListener {
+            dialog.show()
+        }
 
         return binding.root
     }

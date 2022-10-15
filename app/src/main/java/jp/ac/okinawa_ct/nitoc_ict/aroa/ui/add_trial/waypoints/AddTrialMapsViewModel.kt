@@ -7,7 +7,6 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.Marker
-import com.google.maps.android.PolyUtil
 import com.google.maps.model.DirectionsResult
 import jp.ac.okinawa_ct.nitoc_ict.aroa.data.dto.Result
 import jp.ac.okinawa_ct.nitoc_ict.aroa.data.dto.Trial
@@ -34,6 +33,18 @@ class AddTrialMapsViewModel(application: Application) : AndroidViewModel(applica
         value = ArrayList()
     }
     val waypointMarkers: LiveData<ArrayList<Marker>> get() = _waypointMarkers
+
+    private val _trialCourse = MutableLiveData<ArrayList<LatLng>>().apply {
+        value = ArrayList()
+    }
+    val trialCourse: LiveData<ArrayList<LatLng>> get() = _trialCourse
+
+    private val _trialName = MutableLiveData<String>()
+    val trialName: LiveData<String> get() = _trialName
+
+    fun setTrialName(name: String) {
+        _trialName.value = name
+    }
 
     fun setOrigin(latLng: LatLng) {
         _origin.value = latLng
@@ -75,28 +86,43 @@ class AddTrialMapsViewModel(application: Application) : AndroidViewModel(applica
                 sb.append(waypoint.position.latitude.toString() + "," + waypoint.position.longitude.toString() + "|")
             }
         }
-        val waypointsString = sb.toString()
-        return waypointsString
+        return sb.toString()
     }
 
 
     //DirectionAPIを実行
     fun directionApiExecute() {
         viewModelScope.launch {
-            val waypointsString = markersToString()
-            val result = DirectionsApiHelper().execute(
-                com.google.maps.model.LatLng(_origin.value!!.latitude, _origin.value!!.longitude),
-                com.google.maps.model.LatLng(_dest.value!!.latitude, _dest.value!!.longitude),
-                waypointsString
-            )
-            _directionsResult.value = result
+            if (_waypointMarkers.value!!.isNotEmpty()) {
+                val waypointsString = markersToString()
+                val result = DirectionsApiHelper().execute(
+                    com.google.maps.model.LatLng(_origin.value!!.latitude, _origin.value!!.longitude),
+                    com.google.maps.model.LatLng(_dest.value!!.latitude, _dest.value!!.longitude),
+                    waypointsString
+                )
+                _directionsResult.value = result
+            }else {
+                val result = DirectionsApiHelper().onlyOriginDestExecute(
+                    com.google.maps.model.LatLng(_origin.value!!.latitude, _origin.value!!.longitude),
+                    com.google.maps.model.LatLng(_dest.value!!.latitude, _dest.value!!.longitude),
+                )
+                _directionsResult.value = result
+            }
+
         }
     }
 
     fun createNewTrial() {
-        val trialCourse =
-            PolyUtil.decode(directionsResult.value!!.routes[0].overviewPolyline.encodedPath)
-        val trial = Trial.Marathon("沖縄高専外周コース4", "ひじかた", trialCourse[0], trialCourse,"2022年10月14日")
+        _trialCourse.value!!.add(_origin.value!!)
+        for (waypoint in _waypointMarkers.value!!) {
+            _trialCourse.value!!.add(LatLng(waypoint.position.latitude,waypoint.position.longitude))
+        }
+        _trialCourse.value!!.add(_dest.value!!)
+        val trial = Trial.Marathon(_trialName.value!!,
+            "ひじかた",
+            _trialCourse.value!!.toList()[0],
+            _trialCourse.value!!.toList(),
+            "2022年10月14日")
         viewModelScope.launch {
             trialRepositoryDummy.createTrial(trial).collect{
                 when(it) {
