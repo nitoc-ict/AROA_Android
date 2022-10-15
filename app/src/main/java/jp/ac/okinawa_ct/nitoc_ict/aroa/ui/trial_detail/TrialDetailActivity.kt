@@ -8,6 +8,7 @@ import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import com.google.android.material.snackbar.Snackbar
+import com.unity3d.player.UnityPlayerActivity
 import jp.ac.okinawa_ct.nitoc_ict.aroa.R
 import jp.ac.okinawa_ct.nitoc_ict.aroa.databinding.ActivityTrialDetailBinding
 
@@ -48,6 +49,8 @@ class TrialDetailActivity : AppCompatActivity() {
         binding.startTrialFab.setOnClickListener {
             // TODO トライアルの開始処理
             Snackbar.make(it, trialId ?: "", Snackbar.LENGTH_LONG).show()
+            val intent = UnityPlayerActivity.makeIntent(this, "")
+            startActivity(intent)
         }
     }
 }

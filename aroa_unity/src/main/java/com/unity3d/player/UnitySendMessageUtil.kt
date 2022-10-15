@@ -15,3 +15,7 @@ fun UnityPlayerActivity.setCurrentRankText(rank: String) {
 fun UnityPlayerActivity.setCirclesState(state: String) {
     UnityPlayer.UnitySendMessage("Android", "SetCirclesState", state)
 }
+
+fun UnityPlayerActivity.setAlertText(text: String) {
+    UnityPlayer.UnitySendMessage("Android", "SetAlertText", text)
+}

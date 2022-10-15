@@ -4,6 +4,8 @@ import com.unity3d.player.IUnityPlayerLifecycleEvents
 import com.unity3d.player.UnityPlayer
 import android.os.Bundle
 import android.content.Intent
+import com.unity3d.player.MultiWindowSupport
+import android.content.ComponentCallbacks2
 import android.content.Context
 import android.content.res.Configuration
 import android.view.KeyEvent
@@ -11,9 +13,9 @@ import android.view.MotionEvent
 import android.view.Window
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 class UnityPlayerActivity : AppCompatActivity(), IUnityPlayerLifecycleEvents {
@@ -42,6 +44,9 @@ class UnityPlayerActivity : AppCompatActivity(), IUnityPlayerLifecycleEvents {
         return cmdLine
     }
 
+    private val viewModel by viewModels<UnityPlayerViewModel>()
+
+
     // Setup activity layout
     override fun onCreate(savedInstanceState: Bundle?) {
         requestWindowFeature(Window.FEATURE_NO_TITLE)
@@ -52,17 +57,9 @@ class UnityPlayerActivity : AppCompatActivity(), IUnityPlayerLifecycleEvents {
         setContentView(mUnityPlayer)
         mUnityPlayer!!.requestFocus()
 
-        val viewModel by viewModels<UnityPlayerViewModel>()
-
         lifecycleScope.launch {
             viewModel.rank.collect {
                 setCurrentRankText(it)
-            }
-        }
-
-        lifecycleScope.launch {
-            viewModel.time.collect {
-                setRecordTimeText(it)
             }
         }
 
@@ -73,11 +70,22 @@ class UnityPlayerActivity : AppCompatActivity(), IUnityPlayerLifecycleEvents {
         }
 
         lifecycleScope.launch {
+            viewModel.time.collect {
+                setRecordTimeText(it)
+            }
+        }
+
+        lifecycleScope.launch {
             viewModel.rankState.collect {
                 setCirclesState(it)
             }
         }
 
+        lifecycleScope.launch {
+            viewModel.alertText.collect {
+                setAlertText(it)
+            }
+        }
     }
 
     // When Unity player unloaded move task to background
@@ -133,6 +141,7 @@ class UnityPlayerActivity : AppCompatActivity(), IUnityPlayerLifecycleEvents {
                 this
             )
         ) return
+        viewModel.startDemo()
         mUnityPlayer!!.resume()
     }
 
@@ -167,7 +176,9 @@ class UnityPlayerActivity : AppCompatActivity(), IUnityPlayerLifecycleEvents {
     override fun dispatchKeyEvent(event: KeyEvent): Boolean {
         return if (event.action == KeyEvent.ACTION_MULTIPLE) mUnityPlayer!!.injectEvent(
             event
-        ) else super.dispatchKeyEvent(event)
+        ) else super.dispatchKeyEvent(
+            event
+        )
     }
 
     // Pass any events not handled by (unfocused) views straight to UnityPlayer
