@@ -27,6 +27,7 @@ class TrialRepositoryDummy : TrialRepository {
                     LatLng(26.526230, 128.030372),
                 ), // 沖縄高専の敷地内を回るコース
                 "2022月10月15日",
+                "testTrialID_1"
             ),
             Trial.Marathon(
                 "沖縄高専外周コース2",
@@ -41,6 +42,7 @@ class TrialRepositoryDummy : TrialRepository {
                     LatLng(26.526347, 128.029209),
                 ), // 沖縄高専の敷地内を回るコース
                 "2022月10月15日",
+                "testTrialID_2",
             ),
             Trial.Marathon(
                 "沖縄高専外周コース3",
@@ -55,6 +57,7 @@ class TrialRepositoryDummy : TrialRepository {
                     LatLng(26.525823, 128.031147),
                 ), // 沖縄高専の敷地内を回るコース
                 "2022月10月15日",
+                "testTrialID_3",
             ),
         )
     }
@@ -62,7 +65,11 @@ class TrialRepositoryDummy : TrialRepository {
     override fun getTrialById(id: String): Flow<Result<Trial?>> =
         flow<Result<Trial>> {
             delay(1000) // ネットワーク処理の遅延の際限の為、1000ms 待つ
-            emit(Result.Success(testDataList[0]))
+            for (data in testDataList) {
+                if (data.id == id) {
+                    emit(Result.Success(data))
+                }
+            }
             Log.d("TrialRepositoryDummy", testDataList[0].toString())
         }.catch {
             // 本来はここでエラー処理をする
@@ -100,7 +107,7 @@ class TrialRepositoryDummy : TrialRepository {
     override fun createTrial(trial: Trial): Flow<Result<Trial>> =
         flow<Result<Trial>> {
             testDataList.add(trial)
-            delay(500)
+            delay(50)
             emit(Result.Success(trial))
             Log.d("TrialRepositoryDummy", "createTrial:${testDataList}")
         }.onStart {

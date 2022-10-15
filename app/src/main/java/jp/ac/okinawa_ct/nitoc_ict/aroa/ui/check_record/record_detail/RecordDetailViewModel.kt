@@ -89,7 +89,7 @@ class RecordDetailViewModel : ViewModel() {
 
     fun getRecordById() {
         viewModelScope.launch {
-            recordRepositoryDummy.getRecordByRecordId(_recordId.value!!).collect{
+            recordRepositoryDummy.getRecordByTrialIdAndRecordId(trialId.value!!, _recordId.value!!).collect{
                 when(it) {
                     is Result.Loading -> "Loading"
                     is Result.Success -> {
