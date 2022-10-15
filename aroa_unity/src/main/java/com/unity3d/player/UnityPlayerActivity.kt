@@ -4,15 +4,30 @@ import com.unity3d.player.IUnityPlayerLifecycleEvents
 import com.unity3d.player.UnityPlayer
 import android.os.Bundle
 import android.content.Intent
-import com.unity3d.player.MultiWindowSupport
-import android.content.ComponentCallbacks2
+import android.content.Context
 import android.content.res.Configuration
 import android.view.KeyEvent
 import android.view.MotionEvent
 import android.view.Window
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.lifecycleScope
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 
 class UnityPlayerActivity : AppCompatActivity(), IUnityPlayerLifecycleEvents {
+    companion object {
+        val TAG = UnityPlayerActivity::class.simpleName
+
+        private const val TRIAL_ID = "TRIAL_ID"
+
+        fun makeIntent(context: Context, trialId: String): Intent {
+            return Intent(context, UnityPlayerActivity::class.java)
+                .putExtra(TRIAL_ID, trialId)
+        }
+    }
+
     protected var mUnityPlayer // don't change the name of this variable; referenced from native code
             : UnityPlayer? = null
 
@@ -36,6 +51,33 @@ class UnityPlayerActivity : AppCompatActivity(), IUnityPlayerLifecycleEvents {
         mUnityPlayer = UnityPlayer(this, this)
         setContentView(mUnityPlayer)
         mUnityPlayer!!.requestFocus()
+
+        val viewModel by viewModels<UnityPlayerViewModel>()
+
+        lifecycleScope.launch {
+            viewModel.rank.collect {
+                setCurrentRankText(it)
+            }
+        }
+
+        lifecycleScope.launch {
+            viewModel.time.collect {
+                setRecordTimeText(it)
+            }
+        }
+
+        lifecycleScope.launch {
+            viewModel.trialName.collect {
+                setTrialNameText(it)
+            }
+        }
+
+        lifecycleScope.launch {
+            viewModel.rankState.collect {
+                setCirclesState(it)
+            }
+        }
+
     }
 
     // When Unity player unloaded move task to background
