@@ -5,14 +5,19 @@ pluginManagement {
         mavenCentral()
     }
 }
+
+include ':aroa_unity'
+
 dependencyResolutionManagement {
     repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
     repositories {
         google()
         mavenCentral()
+        flatDir {
+            dirs "${project(':aroa_unity').projectDir}/libs"
+        }
     }
 }
 rootProject.name = "AROA"
 include ':app'
 include ':aroa_data'
-include ':aroa_unity'

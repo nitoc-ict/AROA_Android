@@ -1,5 +1,5 @@
 plugins {
-    id 'com.android.application'
+    id 'com.android.library'
     id 'org.jetbrains.kotlin.android'
     id 'com.google.gms.google-services' // Google Services Gradle Plugin
     id 'com.google.android.libraries.mapsplatform.secrets-gradle-plugin'    // Secrets Gradle Plugin
@@ -11,7 +11,6 @@ android {
     compileSdk 32
 
     defaultConfig {
-        applicationId "jp.ac.okinawa_ct.nitoc_ict.aroa_data"
         minSdk 30
         targetSdk 32
         versionCode 1

@@ -3,7 +3,7 @@ plugins {
     id 'org.jetbrains.kotlin.android'
     id 'com.google.gms.google-services' // Google Services Gradle Plugin
     id 'com.google.android.libraries.mapsplatform.secrets-gradle-plugin'    // Secrets Gradle Plugin
-    id 'androidx.navigation.safeargs.kotlin'    // Navigation Safe Args
+    id 'androidx.navigation.safeargs'    // Navigation Safe Args
 }
 
 android {
