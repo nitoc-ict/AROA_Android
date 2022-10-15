@@ -122,7 +122,7 @@ class AddTrialMapsViewModel(application: Application) : AndroidViewModel(applica
             "ひじかた",
             _trialCourse.value!!.toList()[0],
             _trialCourse.value!!.toList(),
-            "2022年10月14日")
+            "2022年10月16日")
         viewModelScope.launch {
             trialRepositoryDummy.createTrial(trial).collect{
                 when(it) {
