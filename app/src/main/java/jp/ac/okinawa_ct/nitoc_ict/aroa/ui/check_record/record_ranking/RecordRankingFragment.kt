@@ -7,6 +7,8 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.recyclerview.widget.LinearLayoutManager
 import jp.ac.okinawa_ct.nitoc_ict.aroa.databinding.FragmentRecordRankingBinding
 import jp.ac.okinawa_ct.nitoc_ict.aroa.ui.check_record.record_ranking.RecordRankingFragmentArgs
 
@@ -30,7 +32,11 @@ class RecordRankingFragment : Fragment() {
         })
 
         val adapter = RecordRankingListAdapter(requireContext())
-        binding.createdTrialList.adapter = adapter
+        binding.rankingList.adapter = adapter
+
+        val dividerItemDecoration = DividerItemDecoration(
+            requireContext(), LinearLayoutManager(requireContext()).getOrientation())
+        binding.rankingList.addItemDecoration(dividerItemDecoration)
 
         viewModel.testRecordData.observe(viewLifecycleOwner, Observer {
             adapter.submitList(it)
