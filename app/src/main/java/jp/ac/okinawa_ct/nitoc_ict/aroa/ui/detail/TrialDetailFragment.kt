@@ -23,7 +23,7 @@ import jp.ac.okinawa_ct.nitoc_ict.aroa.databinding.FragmentTrialDetailBinding
 
 class TrialDetailFragment : Fragment() {
     companion object {
-        private const val ZOOM_SIZE = 16f
+        private const val ZOOM_SIZE = 14f
         private const val POLYLINE_WIDTH = 12f
     }
 
