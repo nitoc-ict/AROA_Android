@@ -20,6 +20,7 @@ import com.google.maps.android.PolyUtil
 import com.google.maps.model.DirectionsResult
 import jp.ac.okinawa_ct.nitoc_ict.aroa.R
 import jp.ac.okinawa_ct.nitoc_ict.aroa.databinding.FragmentTrialDetailBinding
+import jp.ac.okinawa_ct.nitoc_ict.aroa.ui.trial_detail.TrialDetailActivity
 
 class TrialDetailFragment : Fragment() {
     companion object {
@@ -52,7 +53,9 @@ class TrialDetailFragment : Fragment() {
             binding.startTrialButton.visibility = View.INVISIBLE
         }else {
             binding.startTrialButton.setOnClickListener {
-                //トライアルに参加
+                val trialId = viewModel.trialId.value ?: return@setOnClickListener
+                val intent = TrialDetailActivity.makeIntent(requireContext(), trialId)
+                startActivity(intent)
             }
         }
         binding.checkRankingButton.setOnClickListener {
